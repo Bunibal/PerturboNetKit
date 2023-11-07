@@ -140,7 +140,6 @@ plt.close()
 CalculateCLOUD_Centralities(interactome=ppi, cloud_all=cloud_all, res_dir=results_dir)
 Plot_Centralities(res_dir=results_dir, graph_dir=graph_dir)
 
-
 create_LCC_Results(interactome=ppi, cloud_all=cloud_all, res_dir=results_dir)
 Plot_LCC_Results(res_dir=results_dir, graph_dir=graph_dir)
 
@@ -148,7 +147,6 @@ Plot_LCC_Results(res_dir=results_dir, graph_dir=graph_dir)
 
 Create_Shortest_Distances_Output(interactome=ppi, cloud_all=cloud_all, res_dir=results_dir)
 Plot_SPath_Results(results_dir=results_dir, graph_dir=graph_dir)
-
 
 # 5. Calculate Overlap Between two Drugs
 
@@ -203,14 +201,6 @@ with open(results_dir + '/Separation_TargetsOnly.csv', 'w') as fp_out:
             separation = between_Distance - (d_A + d_B) / 2.0
 
             fp_out.write(
-                c + ',' + c2 + ',' + str(d_A) + ',' + str(d_B) + ',' + str(between_Distance) + ',' + str(separation) + '\n')
-
-
-
-
-
-
-
-
-
+                c + ',' + c2 + ',' + str(d_A) + ',' + str(d_B) + ',' + str(between_Distance) + ',' + str(
+                    separation) + '\n')
 
