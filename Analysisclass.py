@@ -5,24 +5,25 @@ import logging  # TODO: Ask mathilde if this is necessary
 import networkx as nx
 import random as rd
 from scipy.stats import mannwhitneyu
+from Distancesclass import HubDistances
 
 flatten = lambda *n: (e for a in n
                       for e in (flatten(*a) if isinstance(a, (tuple, list)) else (a,)))
 
 
-class Analysis:
+class Analysis(HubDistances):
     """
     This class is used to perform network analysis on a given network.
 
     """
 
     def __init__(self, network, targets_hub_file=None, hub_to_target=None, verbose=False):
+        self.cloud_ShortestPaths_results = None
         self.hub_lcc_results = None
         self.hub_centrality_results = None
-        self.network = network  # The network to be analyzed in networkx format
-        self.targets_hub_file = targets_hub_file  # The file containing the targets and their corresponding hubs
-        self.hub_to_target = hub_to_target  # A dictionary containing the hubs and their corresponding targets
+        self.targets_hub_file = targets_hub_file  # A csv file containing the targets and their corresponding hubs
         self.verbose = verbose  # A boolean indicating if the class should print information
+        super().__init__(network, hub_to_target)
         self.check_input()  # Check if the input is correct
 
     # function to check the input
@@ -93,10 +94,7 @@ class Analysis:
         """
         if network is None:
             network = self.network
-        filtered_targets = []
-        for t in targets:
-            if network.has_node(t):
-                filtered_targets.append(t)
+        filtered_targets = self.filter_targets_in_network(network, targets)
 
         if len(filtered_targets) > 0:
             centralities = []
@@ -211,23 +209,97 @@ class Analysis:
             z_score = (lcc - np.mean(random_distribution)) / np.std(random_distribution)
 
             hub_lccs_results[c] = {'lcc': lcc, 'Zscore': z_score, '#Genes': number_of_genes,
-                                     'RelativeSize': relative_lcc_size}
+                                   'RelativeSize': relative_lcc_size}
         # Save the results
         self.hub_lcc_results = hub_lccs_results
         return hub_lccs_results
 
-    def get_shortest_distances(self, network=None, targets=None):
+    def get_shortest_distances(self, targets, network=None):
         """
         This function calculates the shortest distances between all targets in the network.
         This is always the minimum path between one target and any other target of the other set.
+        This function uses only one set hence calculates the intra hub distance or drug_module diameter
+
         :param network: a networkx graph
-        :param targets: a dictionary containing the hub to target mapping
+        :param targets: targets to be analyzed
         :return: Mean of all paths (d_d) as well as paths (min_paths)
         """
 
         if network is None:
             network = self.network
+
+        filtered_targets = self.filter_targets_in_network(targets, network)
+
+        min_paths = []
+        if len(filtered_targets) > 1:
+            try:
+                for t1 in filtered_targets:
+                    min_distances = []
+                    for t2 in filtered_targets:
+                        if t1 != t2:
+
+                            if nx.has_path(network, t1, t2):
+                                min_distances.append(len(nx.shortest_path(network, t1, t2)) - 1)
+                    min_paths.append(min(min_distances))
+                d_d = sum(min_paths) / float(len(filtered_targets))
+
+                return d_d, min_paths
+            except:
+                return None, None
+        else:
+            return None, None
+
+    def check_shortest_path_between_targets_against_random(self, network=None, targets=None, RandomIterations=10000):
+        """
+        Function to calculate the intra_drug module distance e.g. shortest distances of any target of a given drug to any other target of this drug (mean over all)
+        :param network: a networkx graph
+        :param targets: dictionary containing the hubs, to be analyzed and their targets
+        :param RandomIterations: number of random iterations to be performed. Default: 10000
+        :return: dictionary containing the results
+        """
+        if network is None:
+            network = self.network
         if targets is None:
             targets = self.hub_to_target
+
+        # create a random distribution of centralities on the network
+        if self.verbose:
+            print('Create Random targets...')
+
+        # Create random distribution for randomly drawn proteins on the PPI
+        random_distances = []
+        for i in range(0, RandomIterations):
+            targets_rand = rd.sample(network.nodes(), 2)
+            if nx.has_path(network, targets_rand[0], targets_rand[1]):
+                random_distances.append(len(nx.shortest_path(network, targets[0], targets[1])) - 1)
+
+        # Calculate the module network diameter
+        if self.verbose:
+            print('Calculate Shortest Paths...')
+        cloud_ShortestPaths_results = {}
+        for c in targets.keys():
+            if self.verbose:
+                print(c)
+            if len(targets[c]) == 0:
+                continue
+
+            # Extract min distances
+            d_d, min_paths = self.get_shortest_distances(network, targets[c])
+
+            if d_d is None:
+                continue
+
+            # Calculate p_value by comparing with random Distribution
+            p_value = mannwhitneyu(min_paths, random_distances)[1]
+
+            # Calculate fold change (Glass' Delta)
+            glass_delta = (d_d - np.mean(random_distances)) / np.std(random_distances)
+
+            # Save Result
+            cloud_ShortestPaths_results[c] = {'MeanShortestPath': d_d, 'PValue': p_value, 'FoldChange': glass_delta}
+
+        # Save the results
+        self.cloud_ShortestPaths_results = cloud_ShortestPaths_results
+        return cloud_ShortestPaths_results
 
 

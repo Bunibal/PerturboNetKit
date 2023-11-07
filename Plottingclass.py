@@ -129,12 +129,9 @@ class PipelineAnalysisNetwork(Analysis):
         plt.savefig(filename, format='pdf')
         plt.close()
 
-    def plot_centralities(self, network=None, targets=None, filename='centrality_scatter.pdf'):
+    def plot_centralities(self, filename='centrality_scatter.pdf'):
         """
         Plot the centrality distributions
-
-        :param network: NetworkX graph object
-        :param targets: List of target nodes
         :param filename: Filename to save the plot
         :return: None
         """
@@ -142,12 +139,12 @@ class PipelineAnalysisNetwork(Analysis):
         if self.hub_centrality_results is None:
             if self.verbose:
                 print('Calculating centrality distributions...')
-            self.calculate_centrality_hub(network=network, targets=targets)
+            self.calculate_centrality_hub(network=self.network, targets=self.hub_to_target)
 
         # get foldchange and p_values
         fold_change = []
         p_values = []
-        for target in targets:
+        for target in self.hub_centrality_results.keys():
             fold_change.append(self.hub_centrality_results[target]['fold_change'])
             p_values.append(self.hub_centrality_results[target]['p_value'])
 
@@ -202,3 +199,42 @@ class PipelineAnalysisNetwork(Analysis):
         plt.xlim([min(rel_sizes), max((rel_sizes))])
         plt.ylim([min(zscores), max((zscores))])
         plt.savefig(filename, format='pdf')
+
+    def plot_shortest_path_between_targets(self, filename="shortest_path_between_targets.pdf"):
+        """
+        Plot the results of check_shortest_path_between_targets_against_random
+        :param filename:
+        :return: None
+        """
+
+        # check if shortest path results are already calculated
+        if self.cloud_ShortestPaths_results is None:
+            if self.verbose:
+                print('Calculating shortest path results...')
+            self.check_shortest_path_between_targets_against_random()
+
+        # get p_values and glass_deltas
+        p_value = []
+        glass_delta = []
+        for target in self.cloud_ShortestPaths_results:
+            p_value.append(self.cloud_ShortestPaths_results[target]['PValue'])
+            glass_delta.append(self.cloud_ShortestPaths_results[target]['FoldChange'])
+
+        if self.verbose:
+            print("Plotting shortest path results...")
+            print(f'Total: {len(p_value)}')
+            print(f'Significant: {len([x for x in p_value if x < 0.05])}')
+            print(f'Significant: {len([x for x in p_value if x < 0.05]) / float(len(p_value)):.2f}')
+
+        plt.scatter(glass_delta, p_value, alpha=0.6, c='#40B9D4')
+        plt.legend([
+                       f'Total/Significant: {len(p_value)}/{len([x for x in p_value if abs(x) < 0.05])} ({len([x for x in p_value if abs(x) < 0.05]) / len(p_value):.2f})'],
+                   frameon=False)
+        plt.ylim(min(p_value), 1)
+        plt.xlim([min(glass_delta), max(glass_delta)])
+        plt.yscale('log')
+        plt.xlabel("Glass' Delta")
+        plt.ylabel('PValue')
+        plt.savefig(filename, format='pdf')
+
+
