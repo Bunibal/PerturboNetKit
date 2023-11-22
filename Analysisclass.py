@@ -302,4 +302,28 @@ class Analysis(HubDistances):
         self.cloud_ShortestPaths_results = cloud_ShortestPaths_results
         return cloud_ShortestPaths_results
 
+    def calculate_overlap_between_hubs(self, hubs=None): # TODO: rewrite
+        """
+        This function calculates the overlap between the hubs
+        :param hubs: dictionary containing the hubs, to be analyzed and their targets
+        :return: dictionary containing the results
+        """
+        within_Distances = {}
+        for c in cloud_targets:
+            # print c
+            if len(cloud_targets[c]) == 0:
+                continue
 
+            d_d, min_paths = Check_Shortest_Distances(PPI, cloud_targets[c])
+
+            if d_d == None:
+                continue
+            else:
+                within_Distances[c] = d_d
+
+        clouds = within_Distances.keys()
+        clouds = sorted(clouds)
+        for c in clouds:
+            print(c)
+            d_A = within_Distances[c]
+            targets1 = cloud_targets[c]

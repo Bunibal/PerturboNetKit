@@ -162,7 +162,7 @@ with open('../data/PPI_Analysis/CLOUD_to_TargetsSplit.csv', 'r') as fp:
         for t in tmp[1].split(';'):
             different_Targets.add(t)
 
-# Calcualte within distances
+# Calculate within distances
 within_Distances = {}
 for c in cloud_targets:
     # print c
