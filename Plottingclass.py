@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from Analysisclass import Analysis
 import scipy as stats
+import numpy as np
 
 
 class PipelineAnalysisNetwork(Analysis):
@@ -43,7 +44,7 @@ class PipelineAnalysisNetwork(Analysis):
             network1 = self.network
 
         if network2 is None:
-            if self.hub_to_target is None:
+            if self.node_to_target is None:
                 raise ValueError(
                     'No hub to target dictionary provided. Either provide a dictionary or a second network.')
             else:
@@ -139,7 +140,7 @@ class PipelineAnalysisNetwork(Analysis):
         if self.hub_centrality_results is None:
             if self.verbose:
                 print('Calculating centrality distributions...')
-            self.calculate_centrality_hub(network=self.network, targets=self.hub_to_target)
+            self.calculate_centrality_hub(network=self.network, targets=self.node_to_target)
 
         # get foldchange and p_values
         fold_change = []
@@ -228,8 +229,8 @@ class PipelineAnalysisNetwork(Analysis):
 
         plt.scatter(glass_delta, p_value, alpha=0.6, c='#40B9D4')
         plt.legend([
-                       f'Total/Significant: {len(p_value)}/{len([x for x in p_value if abs(x) < 0.05])} ({len([x for x in p_value if abs(x) < 0.05]) / len(p_value):.2f})'],
-                   frameon=False)
+            f'Total/Significant: {len(p_value)}/{len([x for x in p_value if abs(x) < 0.05])} ({len([x for x in p_value if abs(x) < 0.05]) / len(p_value):.2f})'],
+            frameon=False)
         plt.ylim(min(p_value), 1)
         plt.xlim([min(glass_delta), max(glass_delta)])
         plt.yscale('log')
@@ -237,4 +238,28 @@ class PipelineAnalysisNetwork(Analysis):
         plt.ylabel('PValue')
         plt.savefig(filename, format='pdf')
 
-
+    def go_term_similarity_barplot(self, filename=""):
+        """
+        Plot the results of calculate_similarity_maxspecificity.
+        :param filename: path and filename to save the plot
+        :return: None
+        """
+        for go_branch in self.similarties_bin_means:
+            plt.bar(range(1, max(self.similarties_bin_means[1][2]) + 1),
+                    [np.mean(self.similarties_bin_means[x]) for x in
+                     range(1, max(self.similarties_bin_means[1][2]) + 1)],
+                    yerr=[
+                        1.96 * (np.std(self.similarties_bin_means[x][0]) / float(len(self.similarties_bin_means[x][0])))
+                        for x in
+                        range(1, max(self.similarties_bin_means[1][2]) + 1)], align='center', alpha=0.5, ecolor='black',
+                    capsize=10,
+                    color='#40B9D4', zorder=2)
+            plt.xticks(range(1, max(self.similarties_bin_means[1][2]) + 1),
+                       ['{:2.2f}'.format(x) for x in self.similarties_bin_means[1][1]])
+            plt.xlabel("Glass' Delta")
+            plt.ylabel("GO Similarity (%s)\n%s Similarity (95%% CI)" % (go_branch, "MaxSpecifity"))
+            # plt.show()
+            plt.savefig(
+                filename + go_branch + '_MaxSpecifity_BarPlot.pdf',
+                format='pdf')
+            plt.close()

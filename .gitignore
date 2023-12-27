@@ -1,3 +1,8 @@
 *.pdf
 results
 graphs
+DownloadPPI_1.py
+gene2terms_addupstream.py
+interactions_calculation.py
+methods_ppianalysis5.py
+PPIanalysis_5.py

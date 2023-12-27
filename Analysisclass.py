@@ -1,14 +1,19 @@
 import pandas as pd
 import os
 import numpy as np
-import logging  # TODO: Ask mathilde if this is necessary
+from progressbar import ProgressBar
 import networkx as nx
 import random as rd
 from scipy.stats import mannwhitneyu
 from Distancesclass import HubDistances
+from scipy.stats import binned_statistic
+import gene2terms_addupstream as GO
 
 flatten = lambda *n: (e for a in n
                       for e in (flatten(*a) if isinstance(a, (tuple, list)) else (a,)))
+
+
+# TODO: Change Hub to node
 
 
 class Analysis(HubDistances):
@@ -17,13 +22,16 @@ class Analysis(HubDistances):
 
     """
 
-    def __init__(self, network, targets_hub_file=None, hub_to_target=None, verbose=False):
+    def __init__(self, network, targets_hub_file=None, node_to_target=None, verbose=False):
+        self.disease_similarties_bin_means = None
+        self.similarties_bin_means = None
+        self.overlap_between_nodes = None
         self.cloud_ShortestPaths_results = None
         self.hub_lcc_results = None
         self.hub_centrality_results = None
         self.targets_hub_file = targets_hub_file  # A csv file containing the targets and their corresponding hubs
         self.verbose = verbose  # A boolean indicating if the class should print information
-        super().__init__(network, hub_to_target)
+        super().__init__(network, node_to_target)
         self.check_input()  # Check if the input is correct
 
     # function to check the input
@@ -43,13 +51,13 @@ class Analysis(HubDistances):
         This function reads a csv file containing the targets and their corresponding hubs and returns a dictionary
         :return: dict
         """
-        self.hub_to_target = {}
+        self.node_to_target = {}
         df = pd.read_csv(self.targets_hub_file, sep=',', header=True, index_col=0)
         for index, row in df.iterrows():
-            self.hub_to_target[index] = row.split(';')
+            self.node_to_target[index] = row.split(';')
         if self.verbose:
-            print('Number of different targets: %d' % len(self.hub_to_target))
-        return self.hub_to_target
+            print('Number of different targets: %d' % len(self.node_to_target))
+        return self.node_to_target
 
     def get_degree_distribution(self, network=None):
         """
@@ -79,9 +87,9 @@ class Analysis(HubDistances):
         This function returns a subnetwork containing only the targets.
         :return:
         """
-        if self.hub_to_target is None:
+        if self.node_to_target is None:
             raise ValueError('No hub to target dictionary provided.')
-        targets = list(set(flatten(list(self.hub_to_target.values()))))
+        targets = list(set(flatten(list(self.node_to_target.values()))))
         subnetwork_hub = self.network.subgraph(targets)
         return subnetwork_hub
 
@@ -117,7 +125,7 @@ class Analysis(HubDistances):
             network = self.network
 
         if targets is None:
-            targets = self.hub_to_target
+            targets = self.node_to_target
 
         # create a random distribution of centralities on the network
         if self.verbose:
@@ -181,7 +189,7 @@ class Analysis(HubDistances):
         if network is None:
             network = self.network
         if targets is None:
-            targets = self.hub_to_target
+            targets = self.node_to_target
 
         # create a random distribution of centralities on the network
         if self.verbose:
@@ -260,7 +268,7 @@ class Analysis(HubDistances):
         if network is None:
             network = self.network
         if targets is None:
-            targets = self.hub_to_target
+            targets = self.node_to_target
 
         # create a random distribution of centralities on the network
         if self.verbose:
@@ -302,28 +310,112 @@ class Analysis(HubDistances):
         self.cloud_ShortestPaths_results = cloud_ShortestPaths_results
         return cloud_ShortestPaths_results
 
-    def calculate_overlap_between_hubs(self, hubs=None): # TODO: rewrite
+    def calculate_overlap_between_hubs(self, hubs=None):
         """
         This function calculates the overlap between the hubs
         :param hubs: dictionary containing the hubs, to be analyzed and their targets
         :return: dictionary containing the results
         """
         within_Distances = {}
-        for c in cloud_targets:
+        for c in self.node_to_target:
             # print c
-            if len(cloud_targets[c]) == 0:
+            if len(self.node_to_target[c]) == 0:
                 continue
 
-            d_d, min_paths = Check_Shortest_Distances(PPI, cloud_targets[c])
+            d_d, min_paths = self.get_shortest_distance_between_target_vs_targets(self.network, self.node_to_target[c])
 
             if d_d == None:
                 continue
             else:
                 within_Distances[c] = d_d
 
+        df = pd.DataFrame(columns=["Drug1", "Drug2", "D_Drug1", "D_Drug2", "D_D1_D2", "S"])
         clouds = within_Distances.keys()
-        clouds = sorted(clouds)
         for c in clouds:
-            print(c)
             d_A = within_Distances[c]
-            targets1 = cloud_targets[c]
+            targets1 = self.node_to_target[c]
+            for c2 in clouds:
+                d_B = within_Distances[c2]
+                targets2 = self.node_to_target[c2]
+                distances1 = self.get_shortest_distances_hubs(targets1, targets2, network=self.network)
+                distances2 = self.get_shortest_distances_hubs(targets2, targets1, network=self.network)
+
+                # Dab
+                between_Distance = (sum(distances1) + sum(distances2)) / float((len(distances1) + len(distances2)))
+
+                # Sab
+                separation = between_Distance - (d_A + d_B) / 2.0
+
+                df.append([c, c2, d_A, d_B, between_Distance,
+                           separation], ignore_index=True)
+        self.overlap_between_nodes = df
+        return df
+
+    def calculate_similarity_maxspecificity(self, targets1, targets2, GO_genes_annotation, GO_Association_UP,
+                                            isSeparation=False):
+        """
+        Calculates similarity between two sets derived from an ontology based on the most specific term e.g. term with least annotations.
+        Hence, maximum similarity exits of two drugs are associated to exactly one GO term that exactly is associated only to these two proteins
+
+        """
+        sims = []
+        for t1 in targets1:
+            for t2 in targets2:
+                if t1 > t2 or isSeparation:
+                    if len([len(GO_genes_annotation[x]) for x in
+                            set(GO_Association_UP[t1]).intersection(GO_Association_UP[t2])]) == 0:
+                        SimDis = 0
+                    else:
+                        SimDis = 2.0 / min([len(GO_genes_annotation[x]) for x in
+                                            set(GO_Association_UP[t1]).intersection(GO_Association_UP[t2])])
+                    sims.append(SimDis)
+        if len(sims) > 0:
+            return np.mean(sims)
+        else:
+            return 0
+
+    def go_self_shortestpath(self):
+        """
+        Check how the drug diameter (module size) correlates with GO-term similarity
+        """
+
+        # Set the similarity type
+
+        similarity_type = 'MaxSpecificity'
+
+        # Go through all three branches
+        for go_branch in ['Component', 'Function', 'Process']:
+            print(go_branch)
+
+            drug_shortest_path = []
+            drugs = []
+            for row in self.cloud_ShortestPaths_results.iterrows():
+                drugs.append(row[0][0])
+                drug_shortest_path.append(float(row[0][3]))
+
+            # Bin the diameter sizes
+            bin_means = binned_statistic(drug_shortest_path, drug_shortest_path,
+                                         bins=[-3.2, -2.5, -2, -1.5, -1, -0.5, 0, 0.5, 1.6])
+
+            # create a similarity dictionary
+            similarties = {}
+            for i in range(1, max(bin_means[2]) + 1):
+                similarties[i] = []
+
+            # Load the GO-Upstream branches
+            print('Load GO Associations:')
+            GO_Association_UP, GO_genes_annotation = GO.getAllGene_Annotation(go_branch) # ???
+
+            # Calculate the similarity scores for all the drugs and add them to the specific bins
+            for d, bin in zip(drugs, bin_means[2]):
+                targets = self.node_to_target[d]
+                if len(targets) > 1:
+                    if similarity_type == 'MaxSpecificity':
+                        sims = self.calculate_similarity_maxspecificity(targets, targets, GO_genes_annotation,
+                                                                        GO_Association_UP)
+
+                    similarties[bin].append(np.mean(sims))
+
+            # save in a dictionary with binned means
+            self.similarties_bin_means[go_branch] = [similarties, bin_means]
+
