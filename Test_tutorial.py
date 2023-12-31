@@ -41,4 +41,6 @@ from Reusablenetworkanalysis import Perturbome, CalculateInteractions
 import pandas as pd
 
 pd.read_csv("/home/bunibal/PycharmProjects/Softwaredevelopmentinternship/data/test_data_combi_seq_paper.csv", sep=";", header=0, index_col=0)
-perturbome = Perturbome(perturbations=)
+
+
+perturbome = Perturbome()
