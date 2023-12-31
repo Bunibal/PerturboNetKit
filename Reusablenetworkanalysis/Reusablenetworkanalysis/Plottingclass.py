@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
 import networkx as nx
 from .Analysisclass import Analysis
-import scipy as stats
+import scipy as sc
 import numpy as np
 
 
+# TODO: change all outputs to pdfs?
+# TODO: add checks whether there is a network and node target map available
 class Networkpipeline(Analysis):
     """
     Class for analyzing networks. Contains functions for plotting network properties. Inherits from Analysis.
@@ -84,13 +86,30 @@ class Networkpipeline(Analysis):
     def plot_degree_distributions(self, network1=None, network2=None, filename=None, network1_name="network1",
                                   network2_name="network2"):
         """
-        This function plots the degree distributions of two networks in one plot.
+        Plot the degree distributions of two networks in one plot.
 
-        :param network1: The first network to be analyzed in networkx format
-        :param network2: The second network to be analyzed in networkx format
-        :param filename: The filename of the plot
-        :param network1_name: The name of the first network
-        :param network2_name: The name of the second network
+        This method generates a plot of the degree distributions for two networks using NetworkX.
+
+        :param network1: Networkx graph
+            The first network to be analyzed.
+            :type network1: nx.Graph
+
+        :param network2: Networkx graph
+            The second network to be analyzed.
+            :type network2: nx.Graph
+
+        :param filename: str, optional
+            The filename to save the plot. If not provided, the plot will be displayed but not saved.
+            :type filename: str or None
+
+        :param network1_name: str, optional
+            The name of the first network (used for plot legend). If not provided, defaults to 'Network 1'.
+            :type network1_name: str or None
+
+        :param network2_name: str, optional
+            The name of the second network (used for plot legend). If not provided, defaults to 'Network 2'.
+            :type network2_name: str or None
+
         :return: None
         """
 
@@ -105,7 +124,7 @@ class Networkpipeline(Analysis):
                 network2 = self.get_subnetwork_nodes()
 
         if filename is None:
-            filename = 'degree_distribution.pdf'
+            filename = 'degree_distributions.pdf'
             if self.verbose:
                 print('No filename provided. Default filename is used.')
 
@@ -118,7 +137,7 @@ class Networkpipeline(Analysis):
         axs[0, 0].scatter(degrees1, degree_distribution1, c='grey', alpha=0.4)
         axs[0, 0].scatter(degrees2, degree_distribution2, c='#40B9D4', alpha=0.4)
         axs[0, 0].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[0, 0].set_xscale('log')
         axs[0, 0].set_yscale('log')
@@ -130,7 +149,7 @@ class Networkpipeline(Analysis):
         axs[0, 1].scatter(degrees1, cumulative_degree_distribution1, c='grey', alpha=0.4)
         axs[0, 1].scatter(degrees2, cumulative_degree_distribution2, c='#40B9D4', alpha=0.4)
         axs[0, 1].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[0, 1].set_xscale('log')
         axs[0, 1].set_yscale('log')
@@ -142,7 +161,7 @@ class Networkpipeline(Analysis):
         axs[0, 2].hist(degrees1, bins='auto', alpha=0.4, color='grey')
         axs[0, 2].hist(degrees2, bins='auto', alpha=0.4, color='#40B9D4')
         axs[0, 2].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[0, 2].set_xscale('log')
         axs[0, 2].set_yscale('log')
@@ -153,7 +172,7 @@ class Networkpipeline(Analysis):
         axs[1, 0].hist(degrees1, bins='auto', alpha=0.4, color='grey')
         axs[1, 0].hist(degrees2, bins='auto', alpha=0.4, color='#40B9D4')
         axs[1, 0].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[1, 0].set_xscale('log')
         axs[1, 0].set_xlabel('Degree')
@@ -163,7 +182,7 @@ class Networkpipeline(Analysis):
         axs[1, 1].plot(degrees1, degree_distribution1, c='grey')
         axs[1, 1].plot(degrees2, degree_distribution2, c='#40B9D4')
         axs[1, 1].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[1, 1].set_xscale('log')
         axs[1, 1].set_yscale('log')
@@ -174,7 +193,7 @@ class Networkpipeline(Analysis):
         axs[1, 2].plot(degrees1, degree_distribution1, c='grey')
         axs[1, 2].plot(degrees2, degree_distribution2, c='#40B9D4')
         axs[1, 2].legend(
-            [f'{network1_name}', f'{network2_name}\nKS_pValue: {stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
+            [f'{network1_name}', f'{network2_name}\nKS_pValue: {sc.stats.ks_2samp(degrees1, degrees2)[1]:.2e}'],
             frameon=False)
         axs[1, 2].set_xscale('log')
         axs[1, 2].set_xlabel('Degree')
@@ -186,22 +205,28 @@ class Networkpipeline(Analysis):
 
     def plot_centralities(self, filename='centrality_scatter.pdf'):
         """
-        Plot the centrality distributions
-        :param filename: Filename to save the plot
+        Plot the centrality distributions.
+
+        This method generates a plot of the centrality distributions for a network using NetworkX.
+
+        :param filename: str, optional
+            The filename to save the plot. If not provided, the plot will be displayed but not saved.
+            :type filename: str or None
+
         :return: None
         """
         # check if centrality distributions are already calculated
         if self.node_centrality_results is None:
             if self.verbose:
                 print('Calculating centrality distributions...')
-            self.calculate_centrality_hub(network=self.network, targets=self.node_to_target)
+            self.calculate_centrality_node(network=self.network, node_to_target=self.node_to_target)
 
         # get foldchange and p_values
         fold_change = []
         p_values = []
         for target in self.node_centrality_results.keys():
-            fold_change.append(self.node_centrality_results[target]['fold_change'])
-            p_values.append(self.node_centrality_results[target]['p_value'])
+            fold_change.append(self.node_centrality_results[target]['FoldChange'])
+            p_values.append(self.node_centrality_results[target]['PValue'])
 
         if self.verbose:
             print('Plotting centrality scatter...')
@@ -222,7 +247,14 @@ class Networkpipeline(Analysis):
 
     def plot_lcc_size_results(self, filename='lcc_size_scatter.pdf'):
         """
-        Plot the results of the LCC size analysis
+       Plot the results of the LCC size analysis.
+
+        This method generates a plot of the results obtained from the LCC size analysis.
+
+        :param filename: str, optional
+            The filename to save the plot. If not provided, the plot will be displayed but not saved.
+            :type filename: str or None
+
         :return: None
         """
         # check if lcc size results are already calculated
@@ -257,8 +289,14 @@ class Networkpipeline(Analysis):
 
     def plot_shortest_path_between_targets(self, filename="shortest_path_between_targets.pdf"):
         """
-        Plot the results of check_shortest_path_between_targets_against_random
-        :param filename:
+        Plot the results of check_shortest_path_between_targets_against_random.
+
+        This method generates a plot of the results obtained from the function check_shortest_path_between_targets_against_random.
+
+        :param filename: str, optional
+            The filename to save the plot. If not provided, the plot will be displayed but not saved.
+            :type filename: str or None
+
         :return: None
         """
 
@@ -291,29 +329,3 @@ class Networkpipeline(Analysis):
         plt.xlabel("Glass' Delta")
         plt.ylabel('PValue')
         plt.savefig(filename, format='pdf')
-
-    def go_term_similarity_barplot(self, filename=""):
-        """
-        Plot the results of calculate_similarity_maxspecificity.
-        :param filename: path and filename to save the plot
-        :return: None
-        """
-        for go_branch in self.similarties_bin_means:
-            plt.bar(range(1, max(self.similarties_bin_means[1][2]) + 1),
-                    [np.mean(self.similarties_bin_means[x]) for x in
-                     range(1, max(self.similarties_bin_means[1][2]) + 1)],
-                    yerr=[
-                        1.96 * (np.std(self.similarties_bin_means[x][0]) / float(len(self.similarties_bin_means[x][0])))
-                        for x in
-                        range(1, max(self.similarties_bin_means[1][2]) + 1)], align='center', alpha=0.5, ecolor='black',
-                    capsize=10,
-                    color='#40B9D4', zorder=2)
-            plt.xticks(range(1, max(self.similarties_bin_means[1][2]) + 1),
-                       ['{:2.2f}'.format(x) for x in self.similarties_bin_means[1][1]])
-            plt.xlabel("Glass' Delta")
-            plt.ylabel("GO Similarity (%s)\n%s Similarity (95%% CI)" % (go_branch, "MaxSpecifity"))
-            # plt.show()
-            plt.savefig(
-                filename + go_branch + '_MaxSpecifity_BarPlot.pdf',
-                format='pdf')
-            plt.close()

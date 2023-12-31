@@ -16,8 +16,11 @@ analysis = RNA.Networkpipeline(PPI,
                                targets_node_file="/home/bunibal/PycharmProjects/Softwaredevelopmentinternship/data/CLOUD_All_Targets.csv",
                                verbose=True)
 
-# All of the available Analysis methods are listed below. Uncomment the ones you do not want to use.
+# All the available Analysis methods are listed below. Uncomment the ones you do not want to use.
 degrees, degree_distribution, cumulative_degree_distribution = analysis.get_degree_distribution()
+# if you do not provide networks as input you should ue the following plotting method before getting the subnetwork
+analysis.plot_degree_distributions()
+
 subnetwork = analysis.get_subnetwork_nodes(overwrite_network=True)
 analysis.calculate_centrality_node()
 analysis.compare_lcc_size_against_random()
@@ -28,3 +31,14 @@ analysis.calculate_overlap_between_nodes()
 
 analysis.plot_network(node_size=10, only_LCC=True)
 analysis.plot_degree_distribution()
+analysis.plot_centralities()
+analysis.plot_lcc_size_results()
+analysis.plot_shortest_path_between_targets()
+
+
+# Interaction between nodes
+from Reusablenetworkanalysis import Perturbome, CalculateInteractions
+import pandas as pd
+
+pd.read_csv("/home/bunibal/PycharmProjects/Softwaredevelopmentinternship/data/test_data_combi_seq_paper.csv", sep=";", header=0, index_col=0)
+perturbome = Perturbome(perturbations=)
