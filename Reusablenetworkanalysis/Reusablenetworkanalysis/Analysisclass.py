@@ -63,7 +63,7 @@ class Analysis(NodeDistances):
         A boolean indicating if the class should print information.
     """
 
-    def __init__(self, network, targets_node_file=None, node_to_target=None, verbose=False):
+    def __init__(self, network, targets_node_file=None, node_to_target=None, verbose=False):  # TODO: specify how csv file has to look like with example
         """
         Class constructor initializing attributes and calling the superclass constructor.
 
@@ -274,7 +274,6 @@ class Analysis(NodeDistances):
         if network is None:
             network = self.network
 
-        lcc = 1
         sub_graph = nx.subgraph(network, targets)
         if len(sub_graph.nodes) > 0:
             components = (sub_graph.subgraph(c) for c in nx.connected_components(sub_graph))
@@ -420,13 +419,13 @@ class Analysis(NodeDistances):
                 continue
 
             # Extract min distances
-            d_d, min_paths = self.get_shortest_distances(network=network, targets=targets[c])
+            d_d, min_paths = self.get_shortest_distances(targets[c], network=network)
 
             if d_d is None:
                 continue
 
             # Calculate p_value by comparing with random Distribution
-            p_value = mannwhitneyu(min_paths, random_distances)[1]
+            p_value = mannwhitneyu(min_paths, random_distances)[1] # TODO: change to t-test
 
             # Calculate fold change (Glass' Delta)
             glass_delta = (d_d - np.mean(random_distances)) / np.std(random_distances)
@@ -457,7 +456,7 @@ class Analysis(NodeDistances):
             if len(nodes[c]) == 0:
                 continue
 
-            d_d, min_paths = self.get_shortest_distance_between_target_vs_targets(network=self.network,
+            d_d, min_paths = self.get_shortest_distances(network=self.network,
                                                                                   targets=nodes[c])
 
             if d_d == None:

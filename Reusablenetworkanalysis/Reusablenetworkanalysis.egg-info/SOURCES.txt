@@ -1,3 +1,4 @@
+MANIFEST.in
 README.md
 setup.py
 Reusablenetworkanalysis/Analysisclass.py
@@ -5,6 +6,7 @@ Reusablenetworkanalysis/Distancesclass.py
 Reusablenetworkanalysis/Plottingclass.py
 Reusablenetworkanalysis/Vectorarithmetic.py
 Reusablenetworkanalysis/__init__.py
+Reusablenetworkanalysis/machinelearningclass.py
 Reusablenetworkanalysis/perturbationobject.py
 Reusablenetworkanalysis.egg-info/PKG-INFO
 Reusablenetworkanalysis.egg-info/SOURCES.txt

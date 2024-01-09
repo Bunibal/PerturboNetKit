@@ -6,3 +6,4 @@ gene2terms_addupstream.py
 interactions_calculation.py
 methods_ppianalysis5.py
 PPIanalysis_5.py
+__pycache__

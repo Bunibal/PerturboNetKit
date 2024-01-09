@@ -54,46 +54,6 @@ class NodeDistances:
                 filtered_targets.append(t)
         return filtered_targets
 
-    def get_shortest_distance_between_target_vs_targets(self, network=None, targets=None):
-        """
-        Calculate the shortest distances between all targets in the network.
-
-        This function computes the minimum path between one target and any other target
-        of the same set, resulting in the intra-hub distance or drug module diameter.
-
-        :param network: the network which should be used.
-        :type network: networkx.Graph
-
-        :param targets: Targets to be analyzed.
-        :type targets: list
-
-        :return: Mean of all paths (d_d) and paths (min_paths).
-        :rtype: tuple
-        """
-
-        if network is None:
-            network = self.network
-
-        filtered_targets = self.filter_targets_in_network(targets=targets, network=network)
-
-        min_paths = []
-        if len(filtered_targets) > 1:
-            try:
-                for t1 in filtered_targets:
-                    min_distances = []
-                    for t2 in filtered_targets:
-                        if t1 != t2:
-                            if nx.has_path(network, t1, t2):
-                                min_distances.append(len(nx.shortest_path(network, t1, t2)) - 1)
-                    min_paths.append(min(min_distances))
-                d_d = sum(min_paths) / float(len(filtered_targets))
-
-                return d_d, min_paths
-            except:
-                return None, None
-        else:
-            return None, None
-
     def get_shortest_distances_nodes(self, targets1, targets2, network=None):
         """
         Extract the minimum path between targets.
@@ -178,7 +138,7 @@ class NodeDistances:
         return all_path_lenghts
 
     # =============================================================================
-    def get_pathlengths_for_two_sets(self, network, given_gene_set1, given_gene_set2):
+    def get_pathlengths_for_two_sets(self, network, given_gene_set1, given_gene_set2):  # TODO: replicate of get_shortest_distances_nodes
 
         """
         calculate the shortest paths between two given set of genes in a
@@ -225,7 +185,7 @@ class NodeDistances:
         return all_path_lenghts
 
     # =============================================================================
-    def calc_single_set_distance(self, network, given_gene_set):
+    def calc_single_set_distance(self, network, given_gene_set):  # TODO: get_shortest_distances
 
         """
         Calculates the mean shortest distance for a set of genes on a

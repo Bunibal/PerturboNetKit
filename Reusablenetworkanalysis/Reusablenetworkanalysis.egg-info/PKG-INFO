@@ -5,3 +5,72 @@ Summary: A small package for network analysis
 Home-page: https://github.com/Bunibal/Softwaredevelopmentinternship
 Author: Bunibal
 Author-email: stephan.buchner@univie.ac.at
+
+# Reusablenetworkanalysis Tutorial
+
+## Version: 1.0
+## Date: 2023-12-29
+## Author: Stephan Buchner
+
+This tutorial provides a step-by-step guide on using the Reusablenetworkanalysis package for network analysis. The package is used to analyze biological networks, and it includes methods for calculating various network metrics and visualizing the results.
+Moreover, the package provides code for the analyses of perturbomes and calculation of interactions between between nodes.
+### Installation
+
+Before getting started, make sure you have the Reusablenetworkanalysis package installed. You can install it using pip:
+not available yet - need to publish on Pypi first
+```bash
+pip install Reusablenetworkanalysis
+```
+
+Other possible installation procedure:
+```bash
+git clone https://github.com/Bunibal/Softwaredevelopmentinternship
+cd Reusablenetworkanalysis
+python setup.py install
+```
+
+### Tutorial
+```python
+import Reusablenetworkanalysis as RNA
+import networkx as nx
+
+# Load the Human interactome network
+PPI = nx.read_gml("/path/to/Human_Interactome.gml")
+
+# Possibly subsample the network for shorter runtime
+PPI = PPI.subgraph(list(PPI.nodes)[0:5000])
+
+# Initialize the Networkpipeline with the Human interactome network
+analysis = RNA.Networkpipeline(
+    PPI,
+    targets_node_file="/path/to/CLOUD_All_Targets.csv",
+    verbose=True
+)
+
+# Calculate the network metrics available in the Analysisclass
+degrees, degree_distribution, cumulative_degree_distribution = analysis.get_degree_distribution()
+analysis.plot_degree_distributions()
+subnetwork = analysis.get_subnetwork_nodes(overwrite_network=True)
+analysis.calculate_centrality_node()
+analysis.compare_lcc_size_against_random()
+analysis.check_shortest_path_between_targets_against_random()
+analysis.calculate_overlap_between_nodes()
+
+# Results visualization methods are available in the Plottingclass
+analysis.plot_network(node_size=10, only_LCC=True)
+analysis.plot_degree_distribution()
+analysis.plot_centralities()
+analysis.plot_lcc_size_results()
+analysis.plot_shortest_path_between_targets()
+
+
+# Calculate the perturbome of the network
+from Reusablenetworkanalysis import Perturbome, CalculateInteractions
+
+# Initialize the Perturbome class
+perturbome = Perturbome(
+)
+```
+
+For further information on the methods and their parameters, please refer to the docstrings of the respective methods or the api.html file in the docs folder.
+
