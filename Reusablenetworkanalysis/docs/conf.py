@@ -12,12 +12,12 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../Reusablenetworkanalysis'))
+sys.path.insert(0, os.path.abspath('../PerturboNetKit'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'Reusablenetworkanalysis'
+project = 'PerturboNetKit'
 copyright = '2023, Stephan Buchner'
 author = 'Stephan Buchner'
 

@@ -11,19 +11,20 @@ Moreover, the package provides code for the analyses of perturbomes and calculat
 Before getting started, make sure you have the Reusablenetworkanalysis package installed. You can install it using pip:
 not available yet - need to publish on Pypi first
 ```bash
-pip install Reusablenetworkanalysis
+pip install PerturboNetKit
 ```
 
 Other possible installation procedure:
 ```bash
 git clone https://github.com/Bunibal/Softwaredevelopmentinternship
-cd Reusablenetworkanalysis
+cd PerturboNetKit
 python setup.py install
 ```
 
 ### Tutorial
+
 ```python
-import Reusablenetworkanalysis as RNA
+import PerturboNetKit as RNA
 import networkx as nx
 
 # Load the Human interactome network
@@ -55,9 +56,8 @@ analysis.plot_centralities()
 analysis.plot_lcc_size_results()
 analysis.plot_shortest_path_between_targets()
 
-
 # Calculate the perturbome of the network
-from Reusablenetworkanalysis import Perturbome, CalculateInteractions
+from PerturboNetKit import Perturbome, CalculateInteractions
 
 # Initialize the Perturbome class
 perturbome = Perturbome(

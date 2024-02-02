@@ -2,7 +2,7 @@
 # Date: 2023-12-29
 # Author: Stephan Buchner
 
-import Reusablenetworkanalysis as RNA
+import PerturboNetKit as RNA
 import networkx as nx
 
 # load the Human interactome network
@@ -37,7 +37,7 @@ analysis.plot_shortest_path_between_targets()
 
 
 # Interaction between nodes
-from Reusablenetworkanalysis import Perturbome, CalculateInteractions
+from PerturboNetKit import Perturbome, CalculateInteractions
 import pandas as pd
 
 pd.read_csv("/home/bunibal/PycharmProjects/Softwaredevelopmentinternship/data/test_data_combi_seq_paper.csv", sep=";", header=0, index_col=0)

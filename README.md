@@ -11,19 +11,20 @@ Moreover, the package provides code for the analyses of perturbomes and calculat
 Before getting started, make sure you have the Reusablenetworkanalysis package installed. You can install it using pip:
 not available yet - need to publish on Pypi first
 ```bash
-pip install Reusablenetworkanalysis
+pip install PerturboNetKit
 ```
 
 Other possible installation procedure:
 ```bash
 git clone https://github.com/Bunibal/Softwaredevelopmentinternship
-cd Reusablenetworkanalysis
+cd PerturboNetKit
 python setup.py install
 ```
 
 ### Tutorial
+
 ```python
-import Reusablenetworkanalysis as RNA
+import PerturboNetKit as PNK
 import networkx as nx
 
 # Load the Human interactome network
@@ -33,7 +34,7 @@ PPI = nx.read_gml("/path/to/Human_Interactome.gml")
 PPI = PPI.subgraph(list(PPI.nodes)[0:5000])
 
 # Initialize the Networkpipeline with the Human interactome network
-analysis = RNA.Networkpipeline(
+analysis = PNK.Networkpipeline(
     PPI,
     targets_node_file="/path/to/CLOUD_All_Targets.csv",
     verbose=True
@@ -62,7 +63,7 @@ analysis.plot_shortest_path_between_targets()
 # TODO: Add example for distance calculation
 
 # Calculate the perturbome of the network
-from Reusablenetworkanalysis import Perturbome, CalculateInteractions
+from PerturboNetKit import Perturbome, CalculateInteractions
 
 # Initialize the Perturbome class / load your perturbome
 perturbome = Perturbome(

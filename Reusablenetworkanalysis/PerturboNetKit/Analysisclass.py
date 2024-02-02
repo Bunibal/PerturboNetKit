@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 import numpy as np
-from progressbar import ProgressBar
 import networkx as nx
 import random as rd
 from scipy.stats import mannwhitneyu
