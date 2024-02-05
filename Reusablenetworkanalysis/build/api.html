@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; Reusablenetworkanalysis  documentation</title>
+    <title>&lt;no title&gt; &#8212; PerturboNetKit  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,10 +31,10 @@
 
           <div class="body" role="main">
             
-  <span class="target" id="module-Reusablenetworkanalysis.Analysisclass"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.Analysisclass.</code><code class="descname">Analysis</code><span class="sig-paren">(</span><em>network</em>, <em>targets_node_file=None</em>, <em>node_to_target=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances" title="Reusablenetworkanalysis.Distancesclass.NodeDistances"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reusablenetworkanalysis.Distancesclass.NodeDistances</span></code></a></p>
+  <span class="target" id="module-PerturboNetKit.Analysisclass"></span><dl class="class">
+<dt id="PerturboNetKit.Analysisclass.Analysis">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.Analysisclass.</code><code class="descname">Analysis</code><span class="sig-paren">(</span><em>network</em>, <em>targets_node_file=None</em>, <em>node_to_target=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PerturboNetKit.Distancesclass.NodeDistances" title="PerturboNetKit.Distancesclass.NodeDistances"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerturboNetKit.Distancesclass.NodeDistances</span></code></a></p>
 <p>This class is used to perform network analysis on a given network.
 It comprises the following steps of analysis:</p>
 <ul class="simple">
@@ -66,8 +66,8 @@ It comprises the following steps of analysis:</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.calculate_centrality">
-<code class="descname">calculate_centrality</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.calculate_centrality" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.calculate_centrality">
+<code class="descname">calculate_centrality</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.calculate_centrality" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate closeness centralities for nodes in the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -86,8 +86,8 @@ It comprises the following steps of analysis:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.calculate_centrality_node">
-<code class="descname">calculate_centrality_node</code><span class="sig-paren">(</span><em>node_to_target=None</em>, <em>network=None</em>, <em>NumRandom=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.calculate_centrality_node" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.calculate_centrality_node">
+<code class="descname">calculate_centrality_node</code><span class="sig-paren">(</span><em>node_to_target=None</em>, <em>network=None</em>, <em>NumRandom=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.calculate_centrality_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate closeness centralities for nodes in the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -107,8 +107,8 @@ It comprises the following steps of analysis:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.calculate_overlap_between_nodes">
-<code class="descname">calculate_overlap_between_nodes</code><span class="sig-paren">(</span><em>nodes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.calculate_overlap_between_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.calculate_overlap_between_nodes">
+<code class="descname">calculate_overlap_between_nodes</code><span class="sig-paren">(</span><em>nodes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.calculate_overlap_between_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the overlap between nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -124,15 +124,15 @@ It comprises the following steps of analysis:</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.check_input">
-<code class="descname">check_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.check_input" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.check_input">
+<code class="descname">check_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.check_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function checks if the network is a networkx graph or not.
 It also checks if files exist that you have given the class and loads the targets_node_file if given.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.check_shortest_path_between_targets_against_random">
-<code class="descname">check_shortest_path_between_targets_against_random</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em>, <em>RandomIterations=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.check_shortest_path_between_targets_against_random" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.check_shortest_path_between_targets_against_random">
+<code class="descname">check_shortest_path_between_targets_against_random</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em>, <em>RandomIterations=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.check_shortest_path_between_targets_against_random" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the intra-drug module distance, i.e., shortest distances between any targets of a given drug.</p>
 <p>The result is the mean over all such distances.</p>
 <dl class="field-list simple">
@@ -153,8 +153,8 @@ It also checks if files exist that you have given the class and loads the target
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.compare_lcc_size_against_random">
-<code class="descname">compare_lcc_size_against_random</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em>, <em>RandomIterations=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.compare_lcc_size_against_random" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.compare_lcc_size_against_random">
+<code class="descname">compare_lcc_size_against_random</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em>, <em>RandomIterations=10000</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.compare_lcc_size_against_random" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the actual LCC size of a node against LCCs from randomly drawn nodes.</p>
 <p>Randomly drawn nodes have the same size as the number of targets in the actual node.</p>
 <dl class="field-list simple">
@@ -175,8 +175,8 @@ It also checks if files exist that you have given the class and loads the target
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.get_degree_distribution">
-<code class="descname">get_degree_distribution</code><span class="sig-paren">(</span><em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.get_degree_distribution" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.get_degree_distribution">
+<code class="descname">get_degree_distribution</code><span class="sig-paren">(</span><em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.get_degree_distribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the degree distribution of the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -195,8 +195,8 @@ It also checks if files exist that you have given the class and loads the target
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.get_lcc_size">
-<code class="descname">get_lcc_size</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.get_lcc_size" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.get_lcc_size">
+<code class="descname">get_lcc_size</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.get_lcc_size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the size of the largest connected component (LCC) of given targets in the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -215,8 +215,8 @@ It also checks if files exist that you have given the class and loads the target
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.get_shortest_distances">
-<code class="descname">get_shortest_distances</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.get_shortest_distances" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.get_shortest_distances">
+<code class="descname">get_shortest_distances</code><span class="sig-paren">(</span><em>targets</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.get_shortest_distances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the shortest distances between all targets in the network.</p>
 <p>This function computes the minimum path between one target and any other target
 of the same set, resulting in the intra-node distance or Node module diameter.</p>
@@ -237,8 +237,8 @@ of the same set, resulting in the intra-node distance or Node module diameter.</
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.get_subnetwork_nodes">
-<code class="descname">get_subnetwork_nodes</code><span class="sig-paren">(</span><em>overwrite_network=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.get_subnetwork_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.get_subnetwork_nodes">
+<code class="descname">get_subnetwork_nodes</code><span class="sig-paren">(</span><em>overwrite_network=False</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.get_subnetwork_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a subnetwork containing only the targets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -254,8 +254,8 @@ of the same set, resulting in the intra-node distance or Node module diameter.</
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Analysisclass.Analysis.get_targets_node">
-<code class="descname">get_targets_node</code><span class="sig-paren">(</span><em>targets_node_file=None</em>, <em>columnname='EntrezIDs'</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.Analysis.get_targets_node" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.Analysis.get_targets_node">
+<code class="descname">get_targets_node</code><span class="sig-paren">(</span><em>targets_node_file=None</em>, <em>columnname='EntrezIDs'</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.Analysis.get_targets_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function reads a csv file containing the targets and their corresponding nodes and returns a dictionary.
 Alternatively you can save a dictionary of the map into the attribute node_to_target of the Analysisobject or Networkpipeline.</p>
 <dl class="field-list simple">
@@ -274,8 +274,8 @@ Alternatively you can save a dictionary of the map into the attribute node_to_ta
 </dd></dl>
 
 <dl class="function">
-<dt id="Reusablenetworkanalysis.Analysisclass.flatten">
-<code class="descclassname">Reusablenetworkanalysis.Analysisclass.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>*n</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Analysisclass.flatten" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Analysisclass.flatten">
+<code class="descclassname">PerturboNetKit.Analysisclass.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>*n</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Analysisclass.flatten" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flattens a list and all sublists recursively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -291,9 +291,9 @@ Alternatively you can save a dictionary of the map into the attribute node_to_ta
 </dl>
 </dd></dl>
 
-<span class="target" id="module-Reusablenetworkanalysis.Distancesclass"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.Distancesclass.</code><code class="descname">NodeDistances</code><span class="sig-paren">(</span><em>network</em>, <em>node_to_target</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-PerturboNetKit.Distancesclass"></span><dl class="class">
+<dt id="PerturboNetKit.Distancesclass.NodeDistances">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.Distancesclass.</code><code class="descname">NodeDistances</code><span class="sig-paren">(</span><em>network</em>, <em>node_to_target</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This class calculates the distances between hubs or targets in a network.</p>
 <dl class="simple">
@@ -303,8 +303,8 @@ Alternatively you can save a dictionary of the map into the attribute node_to_ta
 </dd>
 </dl>
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.calc_set_pair_distances">
-<code class="descname">calc_set_pair_distances</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set1</em>, <em>given_gene_set2</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.calc_set_pair_distances" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.calc_set_pair_distances">
+<code class="descname">calc_set_pair_distances</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set1</em>, <em>given_gene_set2</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.calc_set_pair_distances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the mean shortest distance between two sets of genes on
 a given network</p>
 <blockquote>
@@ -321,8 +321,8 @@ a given network</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.calc_single_set_distance">
-<code class="descname">calc_single_set_distance</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.calc_single_set_distance" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.calc_single_set_distance">
+<code class="descname">calc_single_set_distance</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.calc_single_set_distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the mean shortest distance for a set of genes on a
 given network</p>
 <blockquote>
@@ -339,8 +339,8 @@ given network</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.filter_targets_in_network">
-<code class="descname">filter_targets_in_network</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.filter_targets_in_network" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.filter_targets_in_network">
+<code class="descname">filter_targets_in_network</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.filter_targets_in_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter targets that are not in the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -359,8 +359,8 @@ given network</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.get_pathlengths_for_single_set">
-<code class="descname">get_pathlengths_for_single_set</code><span class="sig-paren">(</span><em>network</em>, <em>node</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.get_pathlengths_for_single_set" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.get_pathlengths_for_single_set">
+<code class="descname">get_pathlengths_for_single_set</code><span class="sig-paren">(</span><em>network</em>, <em>node</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.get_pathlengths_for_single_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the shortest paths for a given set of genes in a network.</p>
 <p>The results are stored in a dictionary of dictionaries, where each pair of genes is represented as <cite>gene1</cite> and <cite>gene2</cite> with <cite>gene1 &lt; gene2</cite>. This ensures that each pair is stored only once.</p>
 <dl class="field-list simple">
@@ -385,8 +385,8 @@ given network</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.get_pathlengths_for_two_sets">
-<code class="descname">get_pathlengths_for_two_sets</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set1</em>, <em>given_gene_set2</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.get_pathlengths_for_two_sets" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.get_pathlengths_for_two_sets">
+<code class="descname">get_pathlengths_for_two_sets</code><span class="sig-paren">(</span><em>network</em>, <em>given_gene_set1</em>, <em>given_gene_set2</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.get_pathlengths_for_two_sets" title="Permalink to this definition">¶</a></dt>
 <dd><p>calculate the shortest paths between two given set of genes in a
 given network. The results are stored in a dictionary of
 dictionaries: all_path_lenghts[gene1][gene2] = l with gene1 &lt;
@@ -406,30 +406,8 @@ with gene1 &lt; gene2</p></li>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.get_shortest_distance_between_target_vs_targets">
-<code class="descname">get_shortest_distance_between_target_vs_targets</code><span class="sig-paren">(</span><em>network=None</em>, <em>targets=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.get_shortest_distance_between_target_vs_targets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the shortest distances between all targets in the network.</p>
-<p>This function computes the minimum path between one target and any other target
-of the same set, resulting in the intra-hub distance or drug module diameter.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>network</strong> (<em>networkx.Graph</em>) – the network which should be used.</p></li>
-<li><p><strong>targets</strong> (<em>list</em>) – Targets to be analyzed.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Mean of all paths (d_d) and paths (min_paths).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="Reusablenetworkanalysis.Distancesclass.NodeDistances.get_shortest_distances_nodes">
-<code class="descname">get_shortest_distances_nodes</code><span class="sig-paren">(</span><em>targets1</em>, <em>targets2</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Distancesclass.NodeDistances.get_shortest_distances_nodes" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Distancesclass.NodeDistances.get_shortest_distances_nodes">
+<code class="descname">get_shortest_distances_nodes</code><span class="sig-paren">(</span><em>targets1</em>, <em>targets2</em>, <em>network=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Distancesclass.NodeDistances.get_shortest_distances_nodes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the minimum path between targets.</p>
 <p>This function calculates the minimum path between each target in the first set (targets1)
 and any other target in the second set (targets2) in the provided network.</p>
@@ -454,46 +432,47 @@ The network to be analyzed in networkx format.
 
 </dd></dl>
 
-<span class="target" id="module-Reusablenetworkanalysis.perturbationobject"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.perturbationobject.Perturbome">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.perturbationobject.</code><code class="descname">Perturbome</code><span class="sig-paren">(</span><em>perturbations</em>, <em>interactions</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.perturbationobject.Perturbome" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-PerturboNetKit.perturbationobject"></span><dl class="class">
+<dt id="PerturboNetKit.perturbationobject.Perturbome">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.perturbationobject.</code><code class="descname">Perturbome</code><span class="sig-paren">(</span><em>perturbations</em>, <em>interactions</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.perturbationobject.Perturbome" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for storing pertubation vectors and their interactions
 example:
 perturbations = {“A”: [1, 2, 3], “B”: [4, 5, 6]}
 interactions = {(“A”, “B”): [1, 2, 3]}</p>
 <dl class="method">
-<dt id="Reusablenetworkanalysis.perturbationobject.Perturbome.check_object">
-<code class="descname">check_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.perturbationobject.Perturbome.check_object" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.perturbationobject.Perturbome.check_object">
+<code class="descname">check_object</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.perturbationobject.Perturbome.check_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the pertubation object is valid</p>
 </dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-Reusablenetworkanalysis.Plottingclass"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.Plottingclass.</code><code class="descname">Networkpipeline</code><span class="sig-paren">(</span><em>network</em>, <em>targets_node_file=None</em>, <em>node_to_target=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Reusablenetworkanalysis.Analysisclass.Analysis" title="Reusablenetworkanalysis.Analysisclass.Analysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reusablenetworkanalysis.Analysisclass.Analysis</span></code></a></p>
+<span class="target" id="module-PerturboNetKit.Plottingclass"></span><dl class="class">
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.Plottingclass.</code><code class="descname">Networkpipeline</code><span class="sig-paren">(</span><em>network</em>, <em>targets_node_file=None</em>, <em>node_to_target=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#PerturboNetKit.Analysisclass.Analysis" title="PerturboNetKit.Analysisclass.Analysis"><code class="xref py py-class docutils literal notranslate"><span class="pre">PerturboNetKit.Analysisclass.Analysis</span></code></a></p>
 <p>Class for analyzing networks. Contains functions for plotting network properties. Inherits from Analysis.</p>
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.go_term_similarity_barplot">
-<code class="descname">go_term_similarity_barplot</code><span class="sig-paren">(</span><em>filename=''</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.go_term_similarity_barplot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the results of calculate_similarity_maxspecificity.
-:param filename: path and filename to save the plot
-:return: None</p>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_centralities">
+<code class="descname">plot_centralities</code><span class="sig-paren">(</span><em>filename='centrality_scatter.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_centralities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the centrality distributions.</p>
+<p>This method generates a plot of the centrality distributions for a network using NetworkX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – str, optional
+The filename to save the plot. If not provided, the plot will be displayed but not saved.
+:type filename: str or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_centralities">
-<code class="descname">plot_centralities</code><span class="sig-paren">(</span><em>filename='centrality_scatter.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_centralities" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the centrality distributions
-:param filename: Filename to save the plot
-:return: None</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_degree_distribution">
-<code class="descname">plot_degree_distribution</code><span class="sig-paren">(</span><em>network=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_degree_distribution" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_degree_distribution">
+<code class="descname">plot_degree_distribution</code><span class="sig-paren">(</span><em>network=None</em>, <em>filename=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_degree_distribution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the degree distribution of the network.</p>
 <p>This method generates a plot of the degree distribution using NetworkX.</p>
 <dl class="field-list simple">
@@ -514,17 +493,28 @@ The filename to save the plot. If not provided, the plot will be displayed but n
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_degree_distributions">
-<code class="descname">plot_degree_distributions</code><span class="sig-paren">(</span><em>network1=None</em>, <em>network2=None</em>, <em>filename=None</em>, <em>network1_name='network1'</em>, <em>network2_name='network2'</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_degree_distributions" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function plots the degree distributions of two networks in one plot.</p>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_degree_distributions">
+<code class="descname">plot_degree_distributions</code><span class="sig-paren">(</span><em>network1=None</em>, <em>network2=None</em>, <em>filename=None</em>, <em>network1_name='network1'</em>, <em>network2_name='network2'</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_degree_distributions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the degree distributions of two networks in one plot.</p>
+<p>This method generates a plot of the degree distributions for two networks using NetworkX.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>network1</strong> – The first network to be analyzed in networkx format</p></li>
-<li><p><strong>network2</strong> – The second network to be analyzed in networkx format</p></li>
-<li><p><strong>filename</strong> – The filename of the plot</p></li>
-<li><p><strong>network1_name</strong> – The name of the first network</p></li>
-<li><p><strong>network2_name</strong> – The name of the second network</p></li>
+<li><p><strong>network1</strong> – Networkx graph
+The first network to be analyzed.
+:type network1: nx.Graph</p></li>
+<li><p><strong>network2</strong> – Networkx graph
+The second network to be analyzed.
+:type network2: nx.Graph</p></li>
+<li><p><strong>filename</strong> – str, optional
+The filename to save the plot. If not provided, the plot will be displayed but not saved.
+:type filename: str or None</p></li>
+<li><p><strong>network1_name</strong> – str, optional
+The name of the first network (used for plot legend). If not provided, defaults to ‘Network 1’.
+:type network1_name: str or None</p></li>
+<li><p><strong>network2_name</strong> – str, optional
+The name of the second network (used for plot legend). If not provided, defaults to ‘Network 2’.
+:type network2_name: str or None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -534,15 +524,27 @@ The filename to save the plot. If not provided, the plot will be displayed but n
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_lcc_size_results">
-<code class="descname">plot_lcc_size_results</code><span class="sig-paren">(</span><em>filename='lcc_size_scatter.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_lcc_size_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the results of the LCC size analysis
-:return: None</p>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_lcc_size_results">
+<code class="descname">plot_lcc_size_results</code><span class="sig-paren">(</span><em>filename='lcc_size_scatter.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_lcc_size_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the results of the LCC size analysis.</p>
+<blockquote>
+<div><p>This method generates a plot of the results obtained from the LCC size analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">param filename<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str, optional
+The filename to save the plot. If not provided, the plot will be displayed but not saved.
+:type filename: str or None</p>
+</dd>
+<dt class="field-even">return<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_network">
-<code class="descname">plot_network</code><span class="sig-paren">(</span><em>network=None</em>, <em>filename=None</em>, <em>only_LCC=False</em>, <em>node_size=50</em>, <em>alpha=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_network" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_network">
+<code class="descname">plot_network</code><span class="sig-paren">(</span><em>network=None</em>, <em>filename=None</em>, <em>only_LCC=False</em>, <em>node_size=50</em>, <em>alpha=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_network" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the network.</p>
 <p>This method generates a plot of the network using NetworkX.</p>
 <dl class="field-list simple">
@@ -573,18 +575,27 @@ Default is 0.5.
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_shortest_path_between_targets">
-<code class="descname">plot_shortest_path_between_targets</code><span class="sig-paren">(</span><em>filename='shortest_path_between_targets.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Plottingclass.Networkpipeline.plot_shortest_path_between_targets" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot the results of check_shortest_path_between_targets_against_random
-:param filename:
-:return: None</p>
+<dt id="PerturboNetKit.Plottingclass.Networkpipeline.plot_shortest_path_between_targets">
+<code class="descname">plot_shortest_path_between_targets</code><span class="sig-paren">(</span><em>filename='shortest_path_between_targets.pdf'</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Plottingclass.Networkpipeline.plot_shortest_path_between_targets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the results of check_shortest_path_between_targets_against_random.</p>
+<p>This method generates a plot of the results obtained from the function check_shortest_path_between_targets_against_random.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> – str, optional
+The filename to save the plot. If not provided, the plot will be displayed but not saved.
+:type filename: str or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
-<span class="target" id="module-Reusablenetworkanalysis.Vectorarithmetic"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.Vectorarithmetic.</code><code class="descname">CalculateInteractions</code><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-PerturboNetKit.Vectorarithmetic"></span><dl class="class">
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.Vectorarithmetic.</code><code class="descname">CalculateInteractions</code><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for calculating the interactions between perturbations in a pertubation object.</p>
 <p>Attributes:
@@ -597,13 +608,13 @@ perturbation_object : Perturbome or None</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.add_perturbome">
-<code class="descname">add_perturbome</code><span class="sig-paren">(</span><em>perturbation_object</em>, <em>no_treatment_samples</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.add_perturbome" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.add_perturbome">
+<code class="descname">add_perturbome</code><span class="sig-paren">(</span><em>perturbation_object</em>, <em>no_treatment_samples</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.add_perturbome" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a perturbome object and calculate precision.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>perturbation_object</strong> (<a class="reference internal" href="#Reusablenetworkanalysis.perturbationobject.Perturbome" title="Reusablenetworkanalysis.perturbationobject.Perturbome"><em>Perturbome</em></a>) – The perturbome object to be added.</p></li>
+<li><p><strong>perturbation_object</strong> (<a class="reference internal" href="#PerturboNetKit.perturbationobject.Perturbome" title="PerturboNetKit.perturbationobject.Perturbome"><em>Perturbome</em></a>) – The perturbome object to be added.</p></li>
 <li><p><strong>no_treatment_samples</strong> (<em>pandas.Dataframe</em>) – dataframe containing all the no treatment samples row by row</p></li>
 </ul>
 </dd>
@@ -614,8 +625,8 @@ perturbation_object : Perturbome or None</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.calculate_precision">
-<code class="descname">calculate_precision</code><span class="sig-paren">(</span><em>no_treatment</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.calculate_precision" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.calculate_precision">
+<code class="descname">calculate_precision</code><span class="sig-paren">(</span><em>no_treatment</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.calculate_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the precision matrix of the perturbations.</p>
 <p>First, a Yeojohnson transformation is applied to the data.
 Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.</p>
@@ -633,12 +644,12 @@ Then the covariance matrix is calculated, and the precision matrix is calculated
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.get_interaction_values">
-<code class="descname">get_interaction_values</code><span class="sig-paren">(</span><em>perturbome=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.get_interaction_values" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.get_interaction_values">
+<code class="descname">get_interaction_values</code><span class="sig-paren">(</span><em>perturbome=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.get_interaction_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the interaction values for all perturbations in the perturbation object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>perturbome</strong> (<a class="reference internal" href="#Reusablenetworkanalysis.perturbationobject.Perturbome" title="Reusablenetworkanalysis.perturbationobject.Perturbome"><em>Perturbome</em></a><em> or </em><em>None</em>) – A perturbation object from perturbationobject.py.
+<dd class="field-odd"><p><strong>perturbome</strong> (<a class="reference internal" href="#PerturboNetKit.perturbationobject.Perturbome" title="PerturboNetKit.perturbationobject.Perturbome"><em>Perturbome</em></a><em> or </em><em>None</em>) – A perturbation object from perturbationobject.py.
 Defaults to None if not provided.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -651,8 +662,8 @@ Defaults to None if not provided.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.interaction_value">
-<code class="descname">interaction_value</code><span class="sig-paren">(</span><em>pert1</em>, <em>pert2</em>, <em>combination</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.interaction_value" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.interaction_value">
+<code class="descname">interaction_value</code><span class="sig-paren">(</span><em>pert1</em>, <em>pert2</em>, <em>combination</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.interaction_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the interaction value between two perturbations using Mahalanobis distance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -672,8 +683,8 @@ Defaults to None if not provided.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.pca">
-<code class="descname">pca</code><span class="sig-paren">(</span><em>n_comp=5</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions.pca" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.pca">
+<code class="descname">pca</code><span class="sig-paren">(</span><em>n_comp=5</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.pca" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform Principal Component Analysis (PCA) on the perturbations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -691,14 +702,14 @@ Defaults to None if not provided.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="Reusablenetworkanalysis.Vectorarithmetic.flatten">
-<code class="descclassname">Reusablenetworkanalysis.Vectorarithmetic.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>*n</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.Vectorarithmetic.flatten" title="Permalink to this definition">¶</a></dt>
+<dt id="PerturboNetKit.Vectorarithmetic.flatten">
+<code class="descclassname">PerturboNetKit.Vectorarithmetic.</code><code class="descname">flatten</code><span class="sig-paren">(</span><em>*n</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.flatten" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<span class="target" id="module-Reusablenetworkanalysis.machinelearningclass"></span><dl class="class">
-<dt id="Reusablenetworkanalysis.machinelearningclass.Machinelearning">
-<em class="property">class </em><code class="descclassname">Reusablenetworkanalysis.machinelearningclass.</code><code class="descname">Machinelearning</code><span class="sig-paren">(</span><em>analysis_object</em><span class="sig-paren">)</span><a class="headerlink" href="#Reusablenetworkanalysis.machinelearningclass.Machinelearning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions" title="Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reusablenetworkanalysis.Vectorarithmetic.CalculateInteractions</span></code></a></p>
+<span class="target" id="module-PerturboNetKit.machinelearningclass"></span><dl class="class">
+<dt id="PerturboNetKit.machinelearningclass.Machinelearning">
+<em class="property">class </em><code class="descclassname">PerturboNetKit.machinelearningclass.</code><code class="descname">Machinelearning</code><span class="sig-paren">(</span><em>analysis_object</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.machinelearningclass.Machinelearning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 </dd></dl>
 
 
@@ -709,7 +720,7 @@ Defaults to None if not provided.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Reusablenetworkanalysis</a></h1>
+<h1 class="logo"><a href="index.html">PerturboNetKit</a></h1>
 
 
 

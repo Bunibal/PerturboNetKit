@@ -1,34 +1,34 @@
-.. automodule:: Reusablenetworkanalysis.Analysisclass
+.. automodule:: PerturboNetKit.Analysisclass
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: Reusablenetworkanalysis.Distancesclass
+.. automodule:: PerturboNetKit.Distancesclass
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: Reusablenetworkanalysis.perturbationobject
+.. automodule:: PerturboNetKit.perturbationobject
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: Reusablenetworkanalysis.Plottingclass
+.. automodule:: PerturboNetKit.Plottingclass
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: Reusablenetworkanalysis.Vectorarithmetic
+.. automodule:: PerturboNetKit.Vectorarithmetic
    :members:
    :undoc-members:
    :show-inheritance:
 
 
-.. automodule:: Reusablenetworkanalysis.machinelearningclass
+.. automodule:: PerturboNetKit.machinelearningclass
    :members:
    :undoc-members:
    :show-inheritance:
