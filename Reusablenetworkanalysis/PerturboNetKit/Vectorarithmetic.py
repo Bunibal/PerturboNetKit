@@ -49,6 +49,23 @@ class CalculateInteractions:
         self.perturbation_object = perturbation_object
         self.precision = self.calculate_precision(no_treatment_samples)
 
+    def multiple_testing_corr(self, df):
+        """
+        Perform multiple testing correction (Bonferroni) on all columns in the dataframe which begin with 'p_val'.
+
+        :param df: Dataframe containing the interaction values.
+        :type df: pandas.Dataframe
+
+        :return: Dataframe containing the corrected interaction values.
+        :rtype: pandas.Dataframe
+        """
+
+        pvals_corr = df.copy()
+        # Bonferroni correction
+        pvals_corr = pvals_corr.filter(like='p_val')
+        pvals_corr = pvals_corr.apply(lambda x: x * len(pvals_corr.columns))
+        return pvals_corr
+
     def pca(self, n_comp=5):
         """
         Perform Principal Component Analysis (PCA) on the perturbations.
@@ -157,6 +174,8 @@ class CalculateInteractions:
                         combination)
                     df.loc[key + "_" + key1] = [alpha, beta, gamma, deviation_magnitude, emergent_effect, deviation,
                                                 p_val_deviation, p_val_emergent, p_val_pert1, p_val_pert2]
+
+        self.interaction_values = multiple_testing_corr(df)
         return df
 
     def categorize_interactions(self, interaction_values=None, alpha_threshold=0.05):
@@ -255,11 +274,12 @@ class CalculateInteractions:
         self.interaction_categories = interaction_cat
         return interaction_cat
 
-    def plot_interactions_histogram(self):
+    def plot_interactions_histogram(self, interaction_cat=None):
         """
         Plot heatmap of interaction categories.
         """
-        interaction_cat = self.interaction_categories
+        if interaction_cat is None:
+            interaction_cat = self.interaction_categories
         interaction_cat = pd.DataFrame(interaction_cat, index=["interaction_category"]).T
         interaction_cat = interaction_cat.groupby("interaction_category").size()
         interaction_cat = interaction_cat / interaction_cat.sum()
