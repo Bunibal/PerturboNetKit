@@ -95,7 +95,7 @@ class CalculateInteractions:
         # create empty dataframe for the transformed data
         transformed_data = pd.DataFrame(columns=no_treatment.columns)
         for row in no_treatment:
-            transformed_data.loc[len(transformed_data)] = scipy.stats.yeojohnson(row)  # TODO: like this or sth else?
+            transformed_data.loc[len(transformed_data)] = scipy.stats.yeojohnson(row)
 
         # covariance matrix
         cov = transformed_data.cov()
@@ -175,7 +175,7 @@ class CalculateInteractions:
                     df.loc[key + "_" + key1] = [alpha, beta, gamma, deviation_magnitude, emergent_effect, deviation,
                                                 p_val_deviation, p_val_emergent, p_val_pert1, p_val_pert2]
 
-        self.interaction_values = multiple_testing_corr(df)
+        self.interaction_values = self.multiple_testing_corr(df)
         return df
 
     def categorize_interactions(self, interaction_values=None, alpha_threshold=0.05):
