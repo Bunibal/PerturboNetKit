@@ -25,11 +25,14 @@ class CalculateInteractions:
         Interaction values between perturbations.
     """
 
-    def __init__(self):
+    def __init__(self, perturbation_object=None, no_treatment_samples=None):
         self.precision = None
         self.perturbation_object = None
         self.interaction_values = None
         self.interaction_categories = None
+        self.no_treatment_samples = no_treatment_samples
+        if perturbation_object is not None and no_treatment_samples is not None:
+            self.add_perturbome(perturbation_object, no_treatment_samples)
 
     def add_perturbome(self, perturbation_object, no_treatment_samples):
         """
@@ -64,11 +67,14 @@ class CalculateInteractions:
         # Bonferroni correction
         pvals_corr = pvals_corr.filter(like='p_val')
         pvals_corr = pvals_corr.apply(lambda x: x * len(pvals_corr.columns))
-        return pvals_corr
+        # replace the p_val columns with the corrected p_val columns
+        for col in pvals_corr.columns:
+            df[col] = pvals_corr[col]
+        return df
 
     def pca(self, n_comp=5):
         """
-        Perform Principal Component Analysis (PCA) on the perturbations.
+        Perform Principal Component Analysis (PCA) on the perturbations, interactions and no_treatment samples. Used to reduce # of features.
 
         :param n_comp: Number of components to keep.
         :type n_comp: int
@@ -77,30 +83,59 @@ class CalculateInteractions:
         :rtype: numpy.ndarray
         """
         pca = PCA(n_components=n_comp)
-        return pca.fit(self.perturbation_object.perturbations)
+        self.no_treatment_samples.columns = range(len(self.no_treatment_samples.columns))
+        matrix = pd.concat([pd.DataFrame.from_dict(self.perturbation_object.perturbations, orient='index'),
+                            pd.DataFrame.from_dict(self.perturbation_object.interactions, orient='index'),
+                            self.no_treatment_samples], ignore_index=True)
+        pca.fit(matrix.T)
+        # seperate perturbations, interactions and no_treatment samples
+        perts = pca.components_[:, :len(self.perturbation_object.perturbations)]
+        self.perturbation_object.perturbations = {key: perts[:, i] for i, key in
+                                                  enumerate(self.perturbation_object.perturbations.keys())}
+        inters = pca.components_[:,
+                 len(self.perturbation_object.perturbations):len(self.perturbation_object.perturbations) +
+                                                             len(self.perturbation_object.interactions)]
+        self.perturbation_object.interactions = {key: inters[:, i] for i, key in
+                                                 enumerate(self.perturbation_object.interactions.keys())}
+        no_treat = pca.components_[:, len(self.perturbation_object.perturbations) +
+                                      len(self.perturbation_object.interactions):]
+        self.no_treatment_samples = pd.DataFrame(no_treat, columns=self.no_treatment_samples.index).T
 
-    def calculate_precision(self, no_treatment):
+    def calculate_precision(self, no_treatment, feature_reduction=None):
         """
         Calculate the precision matrix of the perturbations.
 
         First, a Yeojohnson transformation is applied to the data.
         Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.
+        If the covariance matrix is not invertible (more features than samples), a PCA is performed and the precision matrix is calculated from the PCA components.
 
-        :param no_treatment: Matrix of the no treatment samples.
+        :param no_treatment: Matrix of the no treatment samples. In shape of (n_samples, n_features).
         :type no_treatment: pandas.Dataframe
+
+        :param feature_reduction: Method for feature reduction. Default is PCA. options: PCA, PINV
+        :type feature_reduction: str
 
         :return: Precision matrix.
         :rtype: numpy.ndarray
         """
-        # create empty dataframe for the transformed data
-        transformed_data = pd.DataFrame(columns=no_treatment.columns)
-        for row in no_treatment:
-            transformed_data.loc[len(transformed_data)] = scipy.stats.yeojohnson(row)
+        if feature_reduction is None:
+            feature_reduction = "PINV"
 
+        if len(no_treatment) < len(no_treatment.columns) and feature_reduction == "PCA":
+            # if there are more features than samples, perform PCA
+            self.pca(n_comp=len(no_treatment))
+        # create empty dataframe for the transformed data
+        transformed_data = pd.DataFrame(columns=self.no_treatment_samples.columns)
+        for index, row in self.no_treatment_samples.iterrows():
+            transformed_data.loc[len(transformed_data)] = pd.Series(scipy.stats.yeojohnson(row)[0],
+                                                                    index=self.no_treatment_samples.columns)
         # covariance matrix
         cov = transformed_data.cov()
         # precision matrix
-        precision = np.linalg.inv(cov)
+        if feature_reduction == "PINV":
+            precision = np.linalg.pinv(cov)
+        else:
+            precision = np.linalg.inv(cov)
         return precision
 
     def interaction_value(self, pert1, pert2, combination):
@@ -140,10 +175,10 @@ class CalculateInteractions:
         deviation_magnitude = scipy.spatial.distance.mahalanobis(deviation, np.zeros(dim), self.precision)
         dev_pert1 = scipy.spatial.distance.mahalanobis((alpha - 1) * pert1, np.zeros(dim), self.precision)
         dev_pert2 = scipy.spatial.distance.mahalanobis((beta - 1) * pert2, np.zeros(dim), self.precision)
-        p_val_emergent = scipy.stats.chi2.sf(gamma, dim - 1)  # apparently using chi2 distribution to calculate p-value
-        p_val_deviation = scipy.stats.chi2.sf(deviation_magnitude, dim - 1)
-        p_val_pert1 = scipy.stats.chi2.sf(dev_pert1, dim - 1)
-        p_val_pert2 = scipy.stats.chi2.sf(dev_pert2, dim - 1)
+        p_val_emergent = scipy.stats.chi2.sf(gamma, dim)  # apparently using chi2 distribution to calculate p-value
+        p_val_deviation = scipy.stats.chi2.sf(deviation_magnitude, dim)
+        p_val_pert1 = scipy.stats.chi2.sf(dev_pert1, dim)
+        p_val_pert2 = scipy.stats.chi2.sf(dev_pert2, dim)
         return alpha, beta, gamma, deviation_magnitude, emergent_effect, deviation, p_val_deviation, p_val_emergent, p_val_pert1, p_val_pert2
 
     def get_interaction_values(self, perturbome=None):
