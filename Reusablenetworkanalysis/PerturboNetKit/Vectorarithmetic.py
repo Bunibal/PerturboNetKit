@@ -108,6 +108,7 @@ class CalculateInteractions:
         First, a Yeojohnson transformation is applied to the data.
         Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.
         If the covariance matrix is not invertible (more features than samples), a PCA is performed and the precision matrix is calculated from the PCA components.
+        Alternatively, the Moore-Penrose pseudo-inverse is used.
 
         :param no_treatment: Matrix of the no treatment samples. In shape of (n_samples, n_features).
         :type no_treatment: pandas.Dataframe

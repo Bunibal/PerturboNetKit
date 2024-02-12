@@ -595,7 +595,7 @@ The filename to save the plot. If not provided, the plot will be displayed but n
 
 <span class="target" id="module-PerturboNetKit.Vectorarithmetic"></span><dl class="class">
 <dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions">
-<em class="property">class </em><code class="descclassname">PerturboNetKit.Vectorarithmetic.</code><code class="descname">CalculateInteractions</code><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PerturboNetKit.Vectorarithmetic.</code><code class="descname">CalculateInteractions</code><span class="sig-paren">(</span><em>perturbation_object=None</em>, <em>no_treatment_samples=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for calculating the interactions between perturbations in a pertubation object.</p>
 <p>Attributes:
@@ -605,6 +605,8 @@ perturbation_object : Perturbome or None</p>
 </div></blockquote>
 <dl class="simple">
 <dt>precision<span class="classifier">float or None</span></dt><dd><p>Precision calculated based on the number of treatment samples.</p>
+</dd>
+<dt>interaction_values<span class="classifier">pd.DataFrame or None</span></dt><dd><p>Interaction values between perturbations.</p>
 </dd>
 </dl>
 <dl class="method">
@@ -626,19 +628,60 @@ perturbation_object : Perturbome or None</p>
 
 <dl class="method">
 <dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.calculate_precision">
-<code class="descname">calculate_precision</code><span class="sig-paren">(</span><em>no_treatment</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.calculate_precision" title="Permalink to this definition">¶</a></dt>
+<code class="descname">calculate_precision</code><span class="sig-paren">(</span><em>no_treatment</em>, <em>feature_reduction=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.calculate_precision" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the precision matrix of the perturbations.</p>
 <p>First, a Yeojohnson transformation is applied to the data.
-Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.</p>
+Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.
+If the covariance matrix is not invertible (more features than samples), a PCA is performed and the precision matrix is calculated from the PCA components.
+Alternatively, the Moore-Penrose pseudo-inverse is used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>no_treatment</strong> (<em>pandas.Dataframe</em>) – Matrix of the no treatment samples.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>no_treatment</strong> (<em>pandas.Dataframe</em>) – Matrix of the no treatment samples. In shape of (n_samples, n_features).</p></li>
+<li><p><strong>feature_reduction</strong> (<em>str</em>) – Method for feature reduction. Default is PCA. options: PCA, PINV</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Precision matrix.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.categorize_interactions">
+<code class="descname">categorize_interactions</code><span class="sig-paren">(</span><em>interaction_values=None</em>, <em>alpha_threshold=0.05</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.categorize_interactions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Categorize interactions based on pvalues and interaction values.
+Interaction values are categorized as:
+- 000: Non-interacting
+- 001: Emergent effect
+- 100: uni-directional negative without emergent effect
+- 200: uni-directional positive without emergent effect
+- 010: uni-directional negative without emergent effect
+- 020: uni-directional positive without emergent effect
+- 101: uni-directional negative with emergent effect
+- 201: uni-directional positive with emergent effect
+- 011: uni-directional negative with emergent effect
+- 021: uni-directional positive with emergent effect
+- 110: bi-directional negative without emergent effect
+- 120: bi-directional negative and positive without emergent effect
+- 210: bi-directional positive and negative without emergent effect
+- 220: bi-directional positive without emergent effect
+- 111: bi-directional negative with emergent effect
+- 121: bi-directional negative and positive with emergent effect
+- 211: bi-directional positive and negative with emergent effect
+- 221: bi-directional positive with emergent effect</p>
+<p>First digit: perturbation 1 (e.g. 1 = pertubation 2 has a negative effect on perturbation 1)
+Second digit: perturbation 2 (e.g. 2 = pertubation 1 has a positive effect on perturbation 2)
+Third digit: emergent effect (e.g. 1 = emergent effect)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alpha_threshold</strong> (<em>float</em>) – Threshold for the p-value.</p></li>
+<li><p><strong>interaction_values</strong> (<em>pandas.Dataframe</em>) – DataFrame containing the interaction values.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -683,9 +726,26 @@ Defaults to None if not provided.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.multiple_testing_corr">
+<code class="descname">multiple_testing_corr</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.multiple_testing_corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform multiple testing correction (Bonferroni) on all columns in the dataframe which begin with ‘p_val’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.Dataframe</em>) – Dataframe containing the interaction values.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe containing the corrected interaction values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.Dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.pca">
 <code class="descname">pca</code><span class="sig-paren">(</span><em>n_comp=5</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.pca" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform Principal Component Analysis (PCA) on the perturbations.</p>
+<dd><p>Perform Principal Component Analysis (PCA) on the perturbations, interactions and no_treatment samples. Used to reduce # of features.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n_comp</strong> (<em>int</em>) – Number of components to keep.</p>
@@ -697,6 +757,12 @@ Defaults to None if not provided.</p>
 <dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="PerturboNetKit.Vectorarithmetic.CalculateInteractions.plot_interactions_histogram">
+<code class="descname">plot_interactions_histogram</code><span class="sig-paren">(</span><em>interaction_cat=None</em><span class="sig-paren">)</span><a class="headerlink" href="#PerturboNetKit.Vectorarithmetic.CalculateInteractions.plot_interactions_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot heatmap of interaction categories.</p>
 </dd></dl>
 
 </dd></dl>
