@@ -1,6 +1,6 @@
 # Reusablenetworkanalysis Tutorial
 
-## Version: 0.1
+## Version: 1.0
 ## Date: 2023-12-29
 ## Author: Stephan Buchner
 
@@ -24,59 +24,86 @@ python setup.py install
 ### Tutorial
 
 ```python
-import PerturboNetKit as PNK
+# Import necessary libraries
+import PerturboNetKit as RNA
 import networkx as nx
+import pandas as pd
+import numpy as np
 
-# Load the Human interactome network
-PPI = nx.read_gml("/path/to/Human_Interactome.gml")
+# Step 1: Load the Human interactome network
+PPI = nx.read_gml("path/to/Human_Interactome.gml")
 
-# Possibly subsample the network for shorter runtime
+# Step 2: Subsample the network for shorter runtime
 PPI = PPI.subgraph(list(PPI.nodes)[0:5000])
 
-# Initialize the Networkpipeline with the Human interactome network
-analysis = PNK.Networkpipeline(
-    PPI,
-    targets_node_file="/path/to/CLOUD_All_Targets.csv",
-    verbose=True
-)
+# Step 3: Initialize PerturboNetKit analysis
+analysis = RNA.Networkpipeline(PPI,
+                               targets_node_file="path/to/CLOUD_All_Targets.csv",
+                               verbose=True)
 
-# Calculate the network metrics available in the Analysisclass. 
-# The code was reframed and updated from the original code by Caldera et al. (2019).
-degrees, degree_distribution, cumulative_degree_distribution = analysis.get_degree_distribution()
-analysis.plot_degree_distributions()
+# Step 4: Analyze network properties
+
+# Uncomment the following lines to get degree-related information
+# degrees, degree_distribution, cumulative_degree_distribution = analysis.get_degree_distribution()
+# analysis.plot_degree_distributions()
+
+# Obtain a subnetwork of only the specified targets
 subnetwork = analysis.get_subnetwork_nodes(overwrite_network=True)
-analysis.calculate_centrality_node()
-analysis.compare_lcc_size_against_random()
-analysis.check_shortest_path_between_targets_against_random()
-analysis.calculate_overlap_between_nodes()
-
-# Results visualization methods are available in the Plottingclass
+# Potentially plot the subnetwork
 analysis.plot_network(node_size=10, only_LCC=True)
-analysis.plot_degree_distribution()
+
+# Calculate the closeness-centrality of the nodes
+analysis.calculate_centrality_node()
+# Potentially plot the centrality
 analysis.plot_centralities()
+
+# Compare the size of the largest connected component with random nodes
+analysis.compare_lcc_size_against_random()
+# Potentially plot the results
 analysis.plot_lcc_size_results()
+# Or view the results in the terminal
+for key in analysis.node_lcc_results:
+    print(key, analysis.node_lcc_results[key])
+
+# Calculate the shortest path between the targets
+analysis.check_shortest_path_between_targets_against_random()
+# Potentially plot the results
 analysis.plot_shortest_path_between_targets()
 
-# Calculate distances between nodes. 
-# Code was updated from the original code by Guney et al. (2016).
+# Calculate the overlap between the nodes
+analysis.calculate_overlap_between_nodes()
+# View the results in the terminal
+for key in analysis.overlap_between_nodes:
+    print(key, analysis.overlap_between_nodes[key])
 
-# TODO: Add example for distance calculation
+# Step 5: Interaction between nodes
 
-# Calculate the perturbome of the network
+# Import necessary classes
 from PerturboNetKit import Perturbome, CalculateInteractions
 
-# Initialize the Perturbome class / load your perturbome
-perturbome = Perturbome(
-)
-# TODO: Add example for perturbome/interaction calculation
+# Read perturbation data from CSV
+perts = pd.read_csv("path/to/test_data_combi_seq_paper.csv",
+                    sep=";", header=0, index_col=0)
+
+# Create a dictionary of perturbations and interactions
+perturbations = {}
+interactions = {}
+
+# Create the Perturbome object
+perturbome = Perturbome(perturbations=perturbations, interactions=interactions)
+
+# Extract no_treatment_samples as pd.DataFrame
+no_treatment_samples = pd.DataFrame(perts.loc[:, "no_treatment"])
+
+# Calculate interactions between the nodes
+ints = CalculateInteractions(perturbome, no_treatment_samples)
+# Get interaction values for all perturbations
+ints.get_interaction_values()
+# Categorize the interactions
+ints.categorize_interactions()
+# Potentially plot the number of different interactions
+ints.plot_interactions_histogram()
 ```
 
-For further information on the methods and their parameters, please refer to the docstrings of the respective methods or the api.html file in the build folder.
+For further information on the methods and their parameters, please refer to the docstrings of the respective methods or the api.html file in the docs folder.
 
-### References
-
-Caldera, M. et al. (2019) ‘Mapping the perturbome network of cellular perturbations’, Nature Communications, 10, p. 5140. Available at: https://doi.org/10.1038/s41467-019-13058-9.
-
-Guney, E. et al. (2016) ‘Network-based in silico drug efficacy screening’, Nature Communications, 7(1), p. 10331. Available at: https://doi.org/10.1038/ncomms10331.
-
-Menche, J. et al. (2015) ‘Uncovering disease-disease relationships through the incomplete interactome’, Science, 347(6224), p. 1257601. Available at: https://doi.org/10.1126/science.1257601.

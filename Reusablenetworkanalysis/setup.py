@@ -8,6 +8,6 @@ setup(
     author="Bunibal",
     author_email="stephan.buchner@univie.ac.at",
     description="A small package for network analysis",
-    long_description=open('README.md').read(),
+    long_description=open('../README.md').read(),
     url="https://github.com/Bunibal/Softwaredevelopmentinternship",
 )
