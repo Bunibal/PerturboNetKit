@@ -1,7 +1,7 @@
-# Reusablenetworkanalysis Tutorial
+# PerturboNetKit Tutorial
 
 ## Version: 1.0
-## Date: 2023-12-29
+## Date: 2024-02-13
 ## Author: Stephan Buchner
 
 This tutorial provides a step-by-step guide on using the Reusablenetworkanalysis package for network analysis. The package is used to analyze biological networks, and it includes methods for calculating various network metrics and visualizing the results.

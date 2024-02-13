@@ -211,21 +211,28 @@ class NodeDistances:
         # going through all pairs starting from set 1
         for geneA in gene_set1:
             all_distances_A = []
-            all_distances_B = []
             for geneB in gene_set2:
 
                 # the genes are the same, so their distance is 0
                 if geneA == geneB:
                     all_distances_A.append(0)
-                    all_distances_B.append(0)
                 else:
                     if geneA in all_path_lenghts.keys():
                         if geneB in all_path_lenghts.keys():
                             all_distances_A.append(all_path_lenghts[geneA][geneB])
-                            all_distances_B.append(all_path_lenghts[geneB][geneA])
             if len(all_distances_A) > 0:
                 l_min = min(all_distances_A)
                 all_distances.append(l_min)
+
+        for geneB in gene_set2:
+            all_distances_B = []
+            for geneA in gene_set1:
+                if geneA == geneB:
+                    all_distances_B.append(0)
+                else:
+                    if geneB in all_path_lenghts.keys():
+                        if geneA in all_path_lenghts.keys():
+                            all_distances_B.append(all_path_lenghts[geneB][geneA])
             if len(all_distances_B) > 0:
                 all_distances.append(min(all_distances_B))
 

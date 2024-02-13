@@ -72,6 +72,31 @@ class CalculateInteractions:
             df[col] = pvals_corr[col]
         return df
 
+    def z_transform(self, df=None):
+        """
+        Perform z-transformation on a dataframe (column-wise).
+
+        :param df: provided dataframe. Default: perturbations, interactions and no_treatment samples
+        :type df: pandas.Dataframe
+
+        :return: scaled dataframe
+        :rtype: pandas.Dataframe
+        """
+        if df is None:
+            df = pd.concat([pd.DataFrame.from_dict(self.perturbation_object.perturbations, orient='index'),
+                            pd.DataFrame.from_dict(self.perturbation_object.interactions, orient='index'),
+                            self.no_treatment_samples], ignore_index=True)
+            df = (df - df.mean()) / df.std()
+            self.perturbation_object.perturbations = {key: df.loc[i].values for i, key in
+                                                        enumerate(self.perturbation_object.perturbations.keys())}
+            self.perturbation_object.interactions = {key: df.loc[i].values for i, key in
+                                                        enumerate(self.perturbation_object.interactions.keys())}
+            self.no_treatment_samples = df.loc[len(self.perturbation_object.perturbations) +
+                                                len(self.perturbation_object.interactions):]
+        else:
+            return (df - df.mean()) / df.std()
+
+
     def pca(self, n_comp=5):
         """
         Perform Principal Component Analysis (PCA) on the perturbations, interactions and no_treatment samples. Used to reduce # of features.
@@ -308,12 +333,15 @@ class CalculateInteractions:
             else:
                 interaction_cat[interaction_values.index[i]] = "000"  # non-interacting
         self.interaction_categories = interaction_cat
-        # TODO: new col in interaction_values
+        self.interaction_values["interaction_category"] = [interaction_cat[i] for i in interaction_values.index]
         return interaction_cat
 
     def plot_interactions_histogram(self, interaction_cat=None):
         """
         Plot histogram of interaction categories.
+
+        :param interaction_cat: DataFrame containing the interaction categories.
+        :type interaction_cat: pandas.DataFrame
         """
         if interaction_cat is None:
             interaction_cat = self.interaction_categories

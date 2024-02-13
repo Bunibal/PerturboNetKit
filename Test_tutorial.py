@@ -91,3 +91,7 @@ ints.get_interaction_values()
 ints.categorize_interactions()
 # potentially plot the # number of different interactions
 ints.plot_interactions_histogram()
+
+
+# get mean shortest distance between targets
+analysis.calc_set_pair_distances()
