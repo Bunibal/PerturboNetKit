@@ -127,8 +127,6 @@ class NodeDistances:
 
         # calculate the distance of all possible pairs
         for gene1 in gene_set1:
-            if gene1 not in all_path_lenghts.keys():
-                all_path_lenghts[gene1] = {}
             for gene2 in gene_set2:
                 if gene1 != gene2:
                     try:
@@ -183,12 +181,11 @@ class NodeDistances:
             return None, None
 
     def calc_set_pair_distances(self, network, given_gene_set1, given_gene_set2):
-
         """
         Calculates the mean shortest distance between two sets of genes on a given network.
 
-        :param G: The network in networkx format.
-        :type G: networkx.Graph
+        :param network: The network in networkx format.
+        :type network: networkx.Graph
 
         :param given_gene_set1: The first set of genes for which the distance will be computed.
         :type given_gene_set1: iterable

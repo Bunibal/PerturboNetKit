@@ -431,8 +431,8 @@ class Analysis(NodeDistances):
                 d_B = within_Distances[c2]
                 targets2 = nodes[c2]
                 distances = self.get_pathlengths_for_two_sets(targets1, targets2, network=self.network)
-                distances1 = [min(d.values()) for k,d in distances.items() if k in targets1]
-                distances2 = [min(d.values()) for k,d in distances.items() if k in targets2]
+                distances1 = [min(d.values()) for k, d in distances.items() if k in targets1]
+                distances2 = [min(d.values()) for k, d in distances.items() if k in targets2]
                 # Dab
                 if type(distances2[0]) == int and type(distances1[0]) == int:
                     between_Distance = (sum(distances1) + sum(distances2)) / float((len(distances1) + len(distances2)))

@@ -308,11 +308,12 @@ class CalculateInteractions:
             else:
                 interaction_cat[interaction_values.index[i]] = "000"  # non-interacting
         self.interaction_categories = interaction_cat
+        # TODO: new col in interaction_values
         return interaction_cat
 
     def plot_interactions_histogram(self, interaction_cat=None):
         """
-        Plot heatmap of interaction categories.
+        Plot histogram of interaction categories.
         """
         if interaction_cat is None:
             interaction_cat = self.interaction_categories
