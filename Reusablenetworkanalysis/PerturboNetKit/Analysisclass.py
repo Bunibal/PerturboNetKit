@@ -332,47 +332,6 @@ class Analysis(NodeDistances):
         self.node_lcc_results = node_lccs_results
         return node_lccs_results
 
-    def get_shortest_distances(self, targets, network=None):
-        """
-        Calculate the shortest distances between all targets in the network.
-
-        This function computes the minimum path between one target and any other target
-        of the same set, resulting in the intra-node distance or Node module diameter.
-
-        :param network: A NetworkX graph.
-        :type network: networkx.Graph
-
-        :param targets: Targets to be analyzed.
-        :type targets: list
-
-        :return: Mean of all paths (d_d) and paths (min_paths).
-        :rtype: tuple
-        """
-
-        if network is None:
-            network = self.network
-
-        filtered_targets = self.filter_targets_in_network(network=network, targets=targets)
-
-        min_paths = []
-        if len(filtered_targets) > 1:
-            try:
-                for t1 in filtered_targets:
-                    min_distances = []
-                    for t2 in filtered_targets:
-                        if t1 != t2:
-
-                            if nx.has_path(network, t1, t2):
-                                min_distances.append(len(nx.shortest_path(network, t1, t2)) - 1)
-                    min_paths.append(min(min_distances))
-                d_d = sum(min_paths) / float(len(filtered_targets))
-
-                return d_d, min_paths
-            except:
-                return None, None
-        else:
-            return None, None
-
     def check_shortest_path_between_targets_against_random(self, network=None, targets=None, RandomIterations=10000):
         """
         Calculate the intra-drug module distance, i.e., shortest distances between any targets of a given drug.
@@ -418,7 +377,7 @@ class Analysis(NodeDistances):
                 continue
 
             # Extract min distances
-            d_d, min_paths = self.get_shortest_distances(targets[c], network=network)
+            d_d, min_paths = self.get_shortest_mean_distance(targets[c], network=network)
 
             if d_d is None:
                 continue
@@ -455,7 +414,7 @@ class Analysis(NodeDistances):
             if len(nodes[c]) == 0:
                 continue
 
-            d_d, min_paths = self.get_shortest_distances(network=self.network,
+            d_d, min_paths = self.get_shortest_mean_distance(network=self.network,
                                                                                   targets=nodes[c])
 
             if d_d == None:
@@ -463,7 +422,7 @@ class Analysis(NodeDistances):
             else:
                 within_Distances[c] = d_d
 
-        df = pd.DataFrame(columns=["Drug1", "Drug2", "D_Drug1", "D_Drug2", "D_D1_D2", "S"])
+        df = pd.DataFrame(columns=["Node1", "Node2", "D_Node1", "D_Node2", "D_D1_D2", "S"])
         clouds = within_Distances.keys()
         for c in clouds:
             d_A = within_Distances[c]
@@ -471,11 +430,11 @@ class Analysis(NodeDistances):
             for c2 in clouds:
                 d_B = within_Distances[c2]
                 targets2 = nodes[c2]
-                distances1 = self.get_shortest_distances_nodes(targets1, targets2, network=self.network)
-                distances2 = self.get_shortest_distances_nodes(targets2, targets1, network=self.network)
-
+                distances = self.get_pathlengths_for_two_sets(targets1, targets2, network=self.network)
+                distances1 = [min(d.values()) for k,d in distances.items() if k in targets1]
+                distances2 = [min(d.values()) for k,d in distances.items() if k in targets2]
                 # Dab
-                if type(distances2[0]) == int and type(distances1[0]) == int:  # TODO: is this the right solution?
+                if type(distances2[0]) == int and type(distances1[0]) == int:
                     between_Distance = (sum(distances1) + sum(distances2)) / float((len(distances1) + len(distances2)))
 
                     # Sab
