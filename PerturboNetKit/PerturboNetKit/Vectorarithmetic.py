@@ -52,26 +52,6 @@ class CalculateInteractions:
         self.perturbation_object = perturbation_object
         self.precision = self.calculate_precision(no_treatment_samples)
 
-    def multiple_testing_corr(self, df):
-        """
-        Perform multiple testing correction (Bonferroni) on all columns in the dataframe which begin with 'p_val'.
-
-        :param df: Dataframe containing the interaction values.
-        :type df: pandas.Dataframe
-
-        :return: Dataframe containing the corrected interaction values.
-        :rtype: pandas.Dataframe
-        """
-
-        pvals_corr = df.copy()
-        # Bonferroni correction
-        pvals_corr = pvals_corr.filter(like='p_val')
-        pvals_corr = pvals_corr.apply(lambda x: x * len(pvals_corr.columns))
-        # replace the p_val columns with the corrected p_val columns
-        for col in pvals_corr.columns:
-            df[col] = pvals_corr[col]
-        return df
-
     def z_transform(self, df=None):
         """
         Perform z-transformation on a dataframe (column-wise).
@@ -126,11 +106,31 @@ class CalculateInteractions:
                                       len(self.perturbation_object.interactions):]
         self.no_treatment_samples = pd.DataFrame(no_treat, columns=self.no_treatment_samples.index).T
 
+    def remove_redundant_features(self, df, threshold=0.2):
+        """
+        Re
+        :param df:
+        :param threshold:
+        :return:
+        """
+        corr_matrix = df.corr().abs()
+
+        mask = corr_matrix >= threshold
+        redundant_features = []
+
+        for col in mask.columns:
+            correlated_features = mask[col][mask[col]].index.tolist()
+            redundant_features.extend(correlated_features[1:])
+
+        df_reduced = df.drop(columns=redundant_features)
+        return df_reduced
+
+
     def calculate_precision(self, no_treatment, feature_reduction=None):
         """
         Calculate the precision matrix of the perturbations.
 
-        First, a Yeojohnson transformation is applied to the data.
+        First, a Yeo- Johnson transformation is applied to the data.
         Then the covariance matrix is calculated, and the precision matrix is calculated as the inverse of the covariance matrix.
         If the covariance matrix is not invertible (more features than samples), a PCA is performed and the precision matrix is calculated from the PCA components.
         Alternatively, the Moore-Penrose pseudo-inverse is used.
@@ -201,10 +201,10 @@ class CalculateInteractions:
         deviation_magnitude = scipy.spatial.distance.mahalanobis(deviation, np.zeros(dim), self.precision)
         dev_pert1 = scipy.spatial.distance.mahalanobis((alpha - 1) * pert1, np.zeros(dim), self.precision)
         dev_pert2 = scipy.spatial.distance.mahalanobis((beta - 1) * pert2, np.zeros(dim), self.precision)
-        p_val_emergent = scipy.stats.chi2.sf(gamma, dim)  # apparently using chi2 distribution to calculate p-value
-        p_val_deviation = scipy.stats.chi2.sf(deviation_magnitude, dim)
-        p_val_pert1 = scipy.stats.chi2.sf(dev_pert1, dim)
-        p_val_pert2 = scipy.stats.chi2.sf(dev_pert2, dim)
+        p_val_emergent = scipy.stats.chi2.sf(gamma ** 2, dim - 2)  # apparently using chi2 distribution to calculate p-value
+        p_val_deviation = scipy.stats.chi2.sf(deviation_magnitude ** 2, dim)
+        p_val_pert1 = scipy.stats.chi2.sf(dev_pert1 ** 2, dim)
+        p_val_pert2 = scipy.stats.chi2.sf(dev_pert2 ** 2, dim)
         return alpha, beta, gamma, deviation_magnitude, emergent_effect, deviation, p_val_deviation, p_val_emergent, p_val_pert1, p_val_pert2
 
     def get_interaction_values(self, perturbome=None):
@@ -236,7 +236,6 @@ class CalculateInteractions:
                     df.loc[key + "_" + key1] = [alpha, beta, gamma, deviation_magnitude, emergent_effect, deviation,
                                                 p_val_deviation, p_val_emergent, p_val_pert1, p_val_pert2]
 
-        self.interaction_values = self.multiple_testing_corr(df)
         return df
 
     def categorize_interactions(self, interaction_values=None, alpha_threshold=0.05):
