@@ -45,7 +45,7 @@ analysis.check_shortest_path_between_targets_against_random()
 analysis.plot_shortest_path_between_targets()
 
 # calculate the overlap between the nodes
-analysis.calculate_overlap_between_nodes()
+analysis.calculate_distances_between_clouds()
 # view the results in the terminal
 for key in analysis.overlap_between_nodes:
     print(key, analysis.overlap_between_nodes[key])

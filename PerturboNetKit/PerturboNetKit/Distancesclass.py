@@ -140,9 +140,9 @@ class NodeDistances:
 
         return all_path_lenghts
 
-    def get_shortest_mean_distance(self, targets, network=None):
+    def calc_single_set_distance(self, targets, network=None):
         """
-        Calculate the shortest distances between all targets in the network.
+        Calculate the shortest distances between a set of targets in the network.
 
         This function computes the minimum path between one target and any other target
         of the same set, resulting in the intra-node distance or Node module diameter.
@@ -172,7 +172,7 @@ class NodeDistances:
                             if nx.has_path(network, t1, t2):
                                 min_distances.append(len(nx.shortest_path(network, t1, t2)) - 1)
                     min_paths.append(min(min_distances))
-                d_d = sum(min_paths) / float(len(filtered_targets))
+                d_d = sum(min_paths) / float(len(min_paths))
 
                 return d_d, min_paths
             except:

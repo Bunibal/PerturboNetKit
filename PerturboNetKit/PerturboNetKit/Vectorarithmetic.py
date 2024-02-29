@@ -68,14 +68,13 @@ class CalculateInteractions:
                             self.no_treatment_samples], ignore_index=True)
             df = (df - df.mean()) / df.std()
             self.perturbation_object.perturbations = {key: df.loc[i].values for i, key in
-                                                        enumerate(self.perturbation_object.perturbations.keys())}
+                                                      enumerate(self.perturbation_object.perturbations.keys())}
             self.perturbation_object.interactions = {key: df.loc[i].values for i, key in
-                                                        enumerate(self.perturbation_object.interactions.keys())}
+                                                     enumerate(self.perturbation_object.interactions.keys())}
             self.no_treatment_samples = df.loc[len(self.perturbation_object.perturbations) +
-                                                len(self.perturbation_object.interactions):]
+                                               len(self.perturbation_object.interactions):]
         else:
             return (df - df.mean()) / df.std()
-
 
     def pca(self, n_comp=5):
         """
@@ -108,9 +107,11 @@ class CalculateInteractions:
 
     def remove_redundant_features(self, df, threshold=0.2):
         """
-        Re
-        :param df:
-        :param threshold:
+        Removing of redundant data columns
+        :param df: data
+        :type df: pd.Dataframe
+        :param threshold: maximum correlation for removing
+        :type threshold: float
         :return:
         """
         corr_matrix = df.corr().abs()
@@ -125,8 +126,7 @@ class CalculateInteractions:
         df_reduced = df.drop(columns=redundant_features)
         return df_reduced
 
-
-    def calculate_precision(self, no_treatment, feature_reduction=None):
+    def calculate_precision(self, no_treatment, feature_reduction=None, feature_removal=0.2):
         """
         Calculate the precision matrix of the perturbations.
 
@@ -141,9 +141,24 @@ class CalculateInteractions:
         :param feature_reduction: Method for feature reduction. Default is PCA. options: PCA, PINV
         :type feature_reduction: str
 
+        :param feature_removal: Indicates whether to remove redundant features
+        :type feature_removal: bool/float
+
         :return: Precision matrix.
         :rtype: numpy.ndarray
         """
+        if feature_removal:
+            matrix = pd.concat([pd.DataFrame.from_dict(self.perturbation_object.perturbations, orient='index'),
+                                pd.DataFrame.from_dict(self.perturbation_object.interactions, orient='index')],
+                               ignore_index=True)
+            removed_features = self.remove_redundant_features(matrix.T, feature_removal)
+            perts = removed_features[:, :len(self.perturbation_object.perturbations)]
+            self.perturbation_object.perturbations = {key: perts[:, i] for i, key in
+                                                      enumerate(self.perturbation_object.perturbations.keys())}
+            inters = removed_features[:,
+                     len(self.perturbation_object.perturbations):]
+            self.perturbation_object.interactions = {key: inters[:, i] for i, key in
+                                                     enumerate(self.perturbation_object.interactions.keys())}
         if feature_reduction is None:
             feature_reduction = "PINV"
 
@@ -152,9 +167,15 @@ class CalculateInteractions:
             self.pca(n_comp=len(no_treatment))
         # create empty dataframe for the transformed data
         transformed_data = pd.DataFrame(columns=self.no_treatment_samples.columns)
+
+        # Handle negative values by adding a constant value
+        constant = abs(transformed_data.min().min()) + 1
+        transformed_data = transformed_data.add(constant)
+
         for index, row in self.no_treatment_samples.iterrows():
             transformed_data.loc[len(transformed_data)] = pd.Series(scipy.stats.yeojohnson(row)[0],
                                                                     index=self.no_treatment_samples.columns)
+
         # covariance matrix
         cov = transformed_data.cov()
         # precision matrix
@@ -201,7 +222,8 @@ class CalculateInteractions:
         deviation_magnitude = scipy.spatial.distance.mahalanobis(deviation, np.zeros(dim), self.precision)
         dev_pert1 = scipy.spatial.distance.mahalanobis((alpha - 1) * pert1, np.zeros(dim), self.precision)
         dev_pert2 = scipy.spatial.distance.mahalanobis((beta - 1) * pert2, np.zeros(dim), self.precision)
-        p_val_emergent = scipy.stats.chi2.sf(gamma ** 2, dim - 2)  # apparently using chi2 distribution to calculate p-value
+        p_val_emergent = scipy.stats.chi2.sf(gamma ** 2,
+                                             dim - 2)  # apparently using chi2 distribution to calculate p-value
         p_val_deviation = scipy.stats.chi2.sf(deviation_magnitude ** 2, dim)
         p_val_pert1 = scipy.stats.chi2.sf(dev_pert1 ** 2, dim)
         p_val_pert2 = scipy.stats.chi2.sf(dev_pert2 ** 2, dim)

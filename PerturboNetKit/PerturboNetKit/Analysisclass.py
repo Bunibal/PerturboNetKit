@@ -3,7 +3,7 @@ import os
 import numpy as np
 import networkx as nx
 import random as rd
-from scipy.stats import mannwhitneyu
+from scipy.stats import mannwhitneyu, ttest_ind
 from .Distancesclass import NodeDistances
 
 flatten = lambda *n: (e for a in n
@@ -81,7 +81,7 @@ class Analysis(NodeDistances):
         self.disease_similarties_bin_means = None
         self.similarties_bin_means = None
         self.overlap_between_nodes = None
-        self.cloud_ShortestPaths_results = None
+        self.node_shortest_mean_paths = None
         self.node_lcc_results = None
         self.node_centrality_results = None
         self.targets_node_file = targets_node_file  # A csv file containing the targets and their corresponding nodes
@@ -332,7 +332,7 @@ class Analysis(NodeDistances):
         self.node_lcc_results = node_lccs_results
         return node_lccs_results
 
-    def check_shortest_path_between_targets_against_random(self, network=None, targets=None, RandomIterations=10000):
+    def check_shortest_path_between_targets_against_random(self, network=None, targets=None, RandomIterations=10000, test="t_test"):
         """
         Calculate the intra-drug module distance, i.e., shortest distances between any targets of a given drug.
 
@@ -346,6 +346,9 @@ class Analysis(NodeDistances):
 
         :param RandomIterations: Number of random iterations to be performed. Default: 10000.
         :type RandomIterations: int
+
+        :param test: Specifies which test to use: ["t_test", "mann_whitney"]
+        :type test: str
 
         :return: Dictionary containing the results.
         :rtype: dict
@@ -369,7 +372,7 @@ class Analysis(NodeDistances):
         # Calculate the module network diameter
         if self.verbose:
             print('Calculate Shortest Paths...')
-        cloud_ShortestPaths_results = {}
+        node_shortest_mean_paths = {}
         for c in targets.keys():
             if self.verbose:
                 print(c)
@@ -377,25 +380,28 @@ class Analysis(NodeDistances):
                 continue
 
             # Extract min distances
-            d_d, min_paths = self.get_shortest_mean_distance(targets[c], network=network)
+            d_d, min_paths = self.calc_single_set_distance(targets[c], network=network)
 
             if d_d is None:
                 continue
 
             # Calculate p_value by comparing with random Distribution
-            p_value = mannwhitneyu(min_paths, random_distances)[1] # TODO: change to t-test
+            if test =="t_test":
+                p_value = ttest_ind(min_paths, random_distances)[1]
+            elif test == "mann_whitney":
+                p_value = mannwhitneyu(min_paths, random_distances)[1]
 
             # Calculate fold change (Glass' Delta)
             glass_delta = (d_d - np.mean(random_distances)) / np.std(random_distances)
 
             # Save Result
-            cloud_ShortestPaths_results[c] = {'MeanShortestPath': d_d, 'PValue': p_value, 'FoldChange': glass_delta}
+            node_shortest_mean_paths[c] = {'MeanShortestPath': d_d, 'PValue': p_value, 'FoldChange': glass_delta}
 
         # Save the results
-        self.cloud_ShortestPaths_results = cloud_ShortestPaths_results
-        return cloud_ShortestPaths_results
+        self.node_shortest_mean_paths = node_shortest_mean_paths
+        return node_shortest_mean_paths
 
-    def calculate_overlap_between_nodes(self, nodes=None):
+    def calculate_distances_between_clouds(self, nodes=None):
         """
         Calculate the overlap between nodes.
 
@@ -414,8 +420,8 @@ class Analysis(NodeDistances):
             if len(nodes[c]) == 0:
                 continue
 
-            d_d, min_paths = self.get_shortest_mean_distance(network=self.network,
-                                                                                  targets=nodes[c])
+            d_d, min_paths = self.calc_single_set_distance(network=self.network,
+                                                           targets=nodes[c])
 
             if d_d == None:
                 continue

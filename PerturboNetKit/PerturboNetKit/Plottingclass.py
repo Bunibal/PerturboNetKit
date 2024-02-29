@@ -301,7 +301,7 @@ class Networkpipeline(Analysis):
         """
 
         # check if shortest path results are already calculated
-        if self.cloud_ShortestPaths_results is None:
+        if self.node_shortest_mean_paths is None:
             if self.verbose:
                 print('Calculating shortest path results...')
             self.check_shortest_path_between_targets_against_random()
@@ -309,9 +309,9 @@ class Networkpipeline(Analysis):
         # get p_values and glass_deltas
         p_value = []
         glass_delta = []
-        for target in self.cloud_ShortestPaths_results:
-            p_value.append(self.cloud_ShortestPaths_results[target]['PValue'])
-            glass_delta.append(self.cloud_ShortestPaths_results[target]['FoldChange'])
+        for target in self.node_shortest_mean_paths:
+            p_value.append(self.node_shortest_mean_paths[target]['PValue'])
+            glass_delta.append(self.node_shortest_mean_paths[target]['FoldChange'])
 
         if self.verbose:
             print("Plotting shortest path results...")
